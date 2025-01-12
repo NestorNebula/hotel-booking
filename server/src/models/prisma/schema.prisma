@@ -1,0 +1,53 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           Int           @id @default(autoincrement())
+  firstName    String        @db.VarChar(25)
+  lastName     String        @db.VarChar(25)
+  email        String        @db.VarChar(255)
+  password     String        @db.VarChar(255)
+  isAdmin      Boolean       @default(false)
+  reservations Reservation[] @relation(name: "UserReservation")
+  stays        Stay[]        @relation(name: "UserStay")
+}
+
+model Room {
+  id           Int           @id @default(autoincrement())
+  name         String        @db.VarChar(50)
+  description  String
+  images       String[]
+  pricePerDay  Float
+  numberPerDay Int           @default(1)
+  reservations Reservation[] @relation(name: "RoomReservation")
+  stays        Stay[]        @relation(name: "RoomStay")
+}
+
+model Reservation {
+  user   User     @relation(name: "UserReservation", fields: [userId], references: [id])
+  userId Int
+  room   Room     @relation(name: "RoomReservation", fields: [roomId], references: [id])
+  roomId Int
+  date   DateTime
+  stay   Stay?    @relation(name: "StayReservation", fields: [stayId], references: [id])
+  stayId Int?
+
+  @@unique([userId, roomId, date])
+}
+
+model Stay {
+  id           Int           @id @default(autoincrement())
+  firstDay     DateTime
+  lastDay      DateTime
+  user         User          @relation(name: "UserStay", fields: [userId], references: [id])
+  userId       Int
+  room         Room          @relation(name: "RoomStay", fields: [roomId], references: [id])
+  roomId       Int
+  reservations Reservation[] @relation(name: "StayReservation")
+}
