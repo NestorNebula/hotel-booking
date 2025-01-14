@@ -4,8 +4,8 @@ import { populateDb, emptyDb } from './data';
 const app = express();
 
 beforeAll(async () => {
-  const dbPopulated = await populateDb();
-  if (!dbPopulated) throw new Error('Error when populating DB.');
+  const result = await populateDb();
+  if (!result.success) throw new Error('Error when populating DB.');
 });
 
 afterAll(async () => {

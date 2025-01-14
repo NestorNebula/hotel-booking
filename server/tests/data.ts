@@ -8,18 +8,20 @@ import {
 } from './faker';
 import type { Model } from '@utils/types';
 
+interface Data {
+  reservations: Reservation[];
+  rooms: Room[];
+  stays: Stay[];
+  users: User[];
+}
+
 interface Status {
   dataPopulated: boolean;
   attempts: number;
   error: boolean | null;
 }
 
-const getData: () => {
-  reservations: Reservation[];
-  rooms: Room[];
-  stays: Stay[];
-  users: User[];
-} = () => {
+const getData: () => Data = () => {
   const rooms = [
     getFakeRoom({ multiple: false }),
     getFakeRoom({ multiple: true }),
@@ -55,12 +57,19 @@ const populateDb = async () => {
     attempts: 0,
     error: null,
   };
+  let savedData: Data = {
+    reservations: [],
+    rooms: [],
+    stays: [],
+    users: [],
+  };
   while (!status.dataPopulated && status.attempts < 10) {
     status.attempts += 1;
     status.error = null;
     const dbEmptied = await emptyDb();
     if (!dbEmptied) continue;
     const data = getData();
+    savedData = data;
     await populateDataModel(
       data.users,
       status,
@@ -93,13 +102,13 @@ const populateDb = async () => {
         });
         currentDate.setDate(currentDate.getDate() + 1);
       }
-      console.log(reservations.length);
       await populateDataModel(
         reservations,
         status,
         testingQueries.__createTestReservation
       );
       if (status.error) break;
+      savedData.reservations = savedData.reservations.concat(reservations);
       stays.push({ ...stay, reservations });
     }
     if (status.error) continue;
@@ -107,7 +116,7 @@ const populateDb = async () => {
     if (status.error) continue;
     status.dataPopulated = true;
   }
-  return status.dataPopulated;
+  return { success: status.dataPopulated, data: savedData };
 };
 
 const emptyDb = async () => {
