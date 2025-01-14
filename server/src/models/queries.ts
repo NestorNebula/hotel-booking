@@ -1,13 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 import 'dotenv/config';
-import type {
-  PrismaError,
-  QueryResponse,
-  Reservation,
-  Room,
-  Stay,
-  User,
-} from '@utils/types';
+import type { PrismaError, QueryResponse } from '@utils/types';
+import type { Reservation, Room, Stay, User } from '@prisma/client';
 
 const isTesting = process.env.NODE_ENV === 'test';
 const dbUrl = isTesting
@@ -75,13 +69,51 @@ const testingQueries = {
     });
   },
 
-  /* __createTestReservation: async (reservation: Reservation) => {
-  await prisma.reservation.create({
-    data: {
-      userId: {}
-    }
-  })
-} */
+  __createTestReservation: async (reservation: Reservation) => {
+    await prisma.reservation.create({
+      data: {
+        user: {
+          connect: {
+            id: reservation.userId,
+          },
+        },
+        room: {
+          connect: {
+            id: reservation.roomId,
+          },
+        },
+        date: reservation.date,
+      },
+    });
+  },
+
+  __createTestStay: async (stay: Stay & { reservations: Reservation[] }) => {
+    await prisma.stay.create({
+      data: {
+        firstDay: stay.firstDay,
+        lastDay: stay.lastDay,
+        user: {
+          connect: {
+            id: stay.userId,
+          },
+        },
+        room: {
+          connect: {
+            id: stay.roomId,
+          },
+        },
+        reservations: {
+          connect: stay.reservations.map((r) => ({
+            userId_roomId_date: {
+              userId: r.userId,
+              roomId: r.roomId,
+              date: r.date,
+            },
+          })),
+        },
+      },
+    });
+  },
 };
 
-export { query };
+export { query, testingQueries };
