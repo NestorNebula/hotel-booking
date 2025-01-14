@@ -42,7 +42,6 @@ async function query<Type>(cb: () => Type): Promise<QueryResponse<Type>> {
 // Test queries
 const testingQueries = {
   __createTestUser: async (user: User) => {
-    if (!user.id) throw new Error('Test user needs an id.');
     await prisma.user.create({
       data: {
         id: user.id,
@@ -56,7 +55,6 @@ const testingQueries = {
   },
 
   __createTestRoom: async (room: Room) => {
-    if (!room.id) throw new Error('Test room needs an id.');
     await prisma.room.create({
       data: {
         id: room.id,
@@ -113,6 +111,14 @@ const testingQueries = {
         },
       },
     });
+  },
+
+  __emptyTestDb: async () => {
+    if (!isTesting) throw new Error('Cannot use this query outside testing.');
+    await prisma.reservation.deleteMany({});
+    await prisma.stay.deleteMany({});
+    await prisma.room.deleteMany({});
+    await prisma.user.deleteMany({});
   },
 };
 
