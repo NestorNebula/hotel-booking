@@ -5,6 +5,9 @@ import {
   PrismaClientUnknownRequestError,
   PrismaClientValidationError,
 } from '@prisma/client/runtime/library';
+import { Reservation, Room, Stay, User } from '@prisma/client';
+
+type Model = Reservation | Room | Stay | User;
 
 type PrismaError =
   | PrismaClientInitializationError
@@ -18,4 +21,4 @@ interface QueryResponse<Type> {
   error: string | null;
 }
 
-export type { PrismaError, QueryResponse };
+export type { Model, PrismaError, QueryResponse };
