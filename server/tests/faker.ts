@@ -4,14 +4,16 @@ import { Reservation, Room, Stay, User } from '@prisma/client';
 function getFakeReservation({
   userId,
   roomId,
+  date,
 }: {
   userId?: number;
   roomId?: number;
+  date?: Date;
 }): Reservation {
   return {
     userId: userId ?? faker.number.int(),
     roomId: roomId ?? faker.number.int(),
-    date: faker.date.future({ years: 1 }),
+    date: date ?? faker.date.future({ years: 1 }),
     stayId: null,
   };
 }
