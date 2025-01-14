@@ -9,6 +9,7 @@
       "@routes": ["src/routes"],
       "@utils/*": ["src/utils/*"]
     },
+    "types": ["jest", "node"],
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,
