@@ -84,15 +84,16 @@ const populateDb = async () => {
       const stay = data.stays[i];
       const reservations: Reservation[] = [];
       const currentDate = stay.firstDay;
-      while (currentDate <= stay.lastDay) {
+      while (currentDate.getDate() <= stay.lastDay.getDate()) {
         reservations.push({
           userId: stay.userId,
           roomId: stay.roomId,
-          date: currentDate,
+          date: new Date(currentDate.toJSON()),
           stayId: stay.id,
         });
         currentDate.setDate(currentDate.getDate() + 1);
       }
+      console.log(reservations.length);
       await populateDataModel(
         reservations,
         status,
