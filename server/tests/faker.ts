@@ -11,8 +11,8 @@ function getFakeReservation({
   date?: Date;
 }): Reservation {
   return {
-    userId: userId ?? faker.number.int(),
-    roomId: roomId ?? faker.number.int(),
+    userId: userId ?? faker.number.int({ max: 1000000 }),
+    roomId: roomId ?? faker.number.int({ max: 1000000 }),
     date: date ?? faker.date.future({ years: 1 }),
     stayId: null,
   };
@@ -20,7 +20,7 @@ function getFakeReservation({
 
 function getFakeRoom({ multiple }: { multiple: boolean }): Room {
   return {
-    id: faker.number.int(),
+    id: faker.number.int({ max: 1000000 }),
     name: faker.lorem.words({ min: 1, max: 3 }),
     description: faker.lorem.paragraphs({ min: 1, max: 3 }),
     images: [],
@@ -38,11 +38,11 @@ function getFakeStay({
 }): Stay {
   const firstDay = faker.date.future({ years: 1 });
   return {
-    id: faker.number.int(),
+    id: faker.number.int({ max: 1000000 }),
     firstDay,
-    lastDay: faker.date.soon({ days: 10 }),
-    userId: userId ?? faker.number.int(),
-    roomId: roomId ?? faker.number.int(),
+    lastDay: faker.date.soon({ days: 10, refDate: firstDay }),
+    userId: userId ?? faker.number.int({ max: 1000000 }),
+    roomId: roomId ?? faker.number.int({ max: 1000000 }),
   };
 }
 
@@ -52,7 +52,7 @@ function getFakeUser(): User {
     lastName: faker.person.lastName(),
   };
   return {
-    id: faker.number.int(),
+    id: faker.number.int({ max: 1000000 }),
     firstName: person.firstName,
     lastName: person.lastName,
     email: faker.internet.email({
