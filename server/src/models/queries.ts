@@ -64,7 +64,7 @@ const getUserById: (id: number) => Promise<RequestUser> = async (id) => {
       password: true,
     },
   });
-  if (!user) throw new Error('User not found.');
+  if (!user) throw new Sperror('No User', "The user doesn't exist.", 400);
   return user;
 };
 
