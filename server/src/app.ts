@@ -39,6 +39,10 @@ app.use(
   routes.user
 );
 
+app.use((req: Request, res: Response, next: NextFunction) => {
+  next(new Sperror('Not Found', "The resource couldn't be found.", 404));
+});
+
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   err instanceof Sperror
     ? next(err)
