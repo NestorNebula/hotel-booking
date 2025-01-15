@@ -1,8 +1,13 @@
 import { Request, Response, NextFunction } from 'express';
 import { validationResult } from 'express-validator';
-import { query, createUser } from '@models/queries';
+import { query, createUser, getFullUserByEmail } from '@models/queries';
 import bcrypt from 'bcrypt';
-import { getToken, getRefreshToken } from '@utils/jwt';
+import {
+  getToken,
+  getRefreshToken,
+  setToken,
+  setRefreshToken,
+} from '@utils/jwt';
 import Sperror from 'sperror';
 
 const signup = async (req: Request, res: Response, next: NextFunction) => {
@@ -24,35 +29,44 @@ const signup = async (req: Request, res: Response, next: NextFunction) => {
     })
   );
   if (error) {
-    throw new Sperror(
-      'Error when creating user',
-      error.message,
-      error.code ?? 500
+    next(
+      new Sperror('Error when creating user', error.message, error.code ?? 500)
     );
+    return;
   }
   const token = getToken(user.id);
   const refreshToken = getRefreshToken(user.id);
-  const expirationDate = new Date(Date.now());
-  expirationDate.setDate(expirationDate.getDate() + 7);
-  res.cookie('token', token, {
-    httpOnly: true,
-    maxAge: 900000,
-    partitioned: true,
-    sameSite: 'none',
-    secure: true,
-  });
-  res.cookie('refresh', refreshToken, {
-    expires: expirationDate,
-    httpOnly: true,
-    partitioned: true,
-    path: '/auth',
-    sameSite: 'none',
-    secure: true,
-  });
+  setToken(res, token);
+  setRefreshToken(res, refreshToken);
   res.json({ success: true });
 };
 
-const login = () => {};
+const login = async (req: Request, res: Response, next: NextFunction) => {
+  const result = validationResult(req);
+  if (!result.isEmpty()) {
+    res.status(400).json({ errors: result.array() });
+    return;
+  }
+  const { result: user, error } = await query(() =>
+    getFullUserByEmail(req.body.email.toLowerCase())
+  );
+  if (error) {
+    error.type !== 'Sperror'
+      ? next(new Sperror('Error when searching user.', error.message, 500))
+      : next(new Sperror('User not found', error.message, 400));
+    return;
+  }
+  const match = bcrypt.compareSync(req.body.password, user.password);
+  if (!match) {
+    next(new Sperror('Incorrect password', "The passwords don't match.", 400));
+    return;
+  }
+  const token = getToken(user.id);
+  const refreshToken = getRefreshToken(user.id);
+  setToken(res, token);
+  setRefreshToken(res, refreshToken);
+  res.json({ success: true });
+};
 
 const guest = () => {};
 
