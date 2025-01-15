@@ -16,10 +16,23 @@ type PrismaError =
   | PrismaClientUnknownRequestError
   | PrismaClientValidationError;
 
-interface QueryResponse<Type> {
-  result: Type | null;
-  error: string | null;
+interface QueryError {
+  type: 'Prisma' | 'Sperror' | 'Unexpected';
+  message: string;
+  code?: number;
 }
+
+interface SuccessfulQueryResponse<Type> {
+  result: Type;
+  error: null;
+}
+
+interface FailedQueryResponse {
+  result: null;
+  error: QueryError;
+}
+
+type QueryResponse<Type> = SuccessfulQueryResponse<Type> | FailedQueryResponse;
 
 type RequestUser = Omit<User, 'password'>;
 
