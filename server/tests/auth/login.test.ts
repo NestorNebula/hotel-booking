@@ -8,6 +8,7 @@ describe('login', () => {
     return request(app)
       .post('/login')
       .send({ email: data.users[0].email, password: data.users[0].password })
+      .type('form')
       .expect(200)
       .then((res) => {
         expect(res.body.success).toBeTruthy();
@@ -18,6 +19,7 @@ describe('login', () => {
     request(app)
       .post('/login')
       .send({ email: data.users[0].email, password: 'wrong password' })
+      .type('form')
       .expect(400, done);
   });
 
@@ -25,6 +27,7 @@ describe('login', () => {
     request(app)
       .post('/login')
       .send({ email: 'this@email.com', password: data.users[0].password })
+      .type('form')
       .expect(400, done);
   });
 });
