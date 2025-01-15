@@ -4,6 +4,9 @@ import cors from 'cors';
 import 'dotenv/config';
 import * as routes from '@routes';
 import Sperror from 'sperror';
+import passport = require('passport');
+import '@utils/passport/strategy';
+import { handleError } from '@utils/passport/fail';
 
 app.use(cors());
 app.use(express.json());
@@ -11,10 +14,30 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use('/auth', routes.auth);
 
-app.use('/reservations', routes.reservation);
-app.use('/rooms', routes.room);
-app.use('/stays', routes.stay);
-app.use('/users', routes.user);
+app.use(
+  '/reservations',
+  passport.authenticate('jwt', { failWithError: true }),
+  handleError,
+  routes.reservation
+);
+app.use(
+  '/rooms',
+  passport.authenticate('jwt', { failWithError: true }),
+  handleError,
+  routes.room
+);
+app.use(
+  '/stays',
+  passport.authenticate('jwt', { failWithError: true }),
+  handleError,
+  routes.stay
+);
+app.use(
+  '/users',
+  passport.authenticate('jwt', { failWithError: true }),
+  handleError,
+  routes.user
+);
 
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   err instanceof Sperror
