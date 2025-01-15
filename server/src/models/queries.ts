@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import 'dotenv/config';
-import type { PrismaError, QueryResponse } from '@utils/types';
+import type { PrismaError, QueryResponse } from '@utils/ts/types';
 import type { Reservation, Room, Stay, User } from '@prisma/client';
 
 const isTesting = process.env.NODE_ENV === 'test';

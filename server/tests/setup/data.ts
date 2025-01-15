@@ -6,7 +6,7 @@ import {
   getFakeStay,
   getFakeUser,
 } from './faker';
-import type { Model } from '@utils/types';
+import type { Model } from '@utils/ts/types';
 
 interface Data {
   reservations: Reservation[];
