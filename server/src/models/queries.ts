@@ -54,6 +54,16 @@ const getUserById: (id: number) => Promise<RequestUser> = async (id) => {
   return user;
 };
 
+const getUserByEmail: (
+  email: string
+) => Promise<Pick<User, 'email'> | null> = async (email) => {
+  const user = await prisma.user.findUnique({
+    where: { email },
+    select: { email: true },
+  });
+  return user;
+};
+
 // Room queries
 
 // Reservation queries
@@ -143,4 +153,4 @@ const testingQueries = {
   },
 };
 
-export { query, getUserById, testingQueries };
+export { query, getUserById, getUserByEmail, testingQueries };
