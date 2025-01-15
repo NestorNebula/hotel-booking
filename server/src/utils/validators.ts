@@ -42,4 +42,13 @@ const validateNewUser = [
     .withMessage(errors.minLength('Password', 8)),
 ];
 
-export { validateNewUser };
+const validateLoginData = [
+  body('email')
+    .isEmail()
+    .withMessage(errors.format('Email', 'valid@email.com')),
+  body('password')
+    .isLength({ min: 8 })
+    .withMessage(errors.minLength('Password', 8)),
+];
+
+export { validateNewUser, validateLoginData };
