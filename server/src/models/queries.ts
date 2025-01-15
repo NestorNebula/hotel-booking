@@ -68,6 +68,13 @@ const getUserById: (id: number) => Promise<RequestUser> = async (id) => {
   return user;
 };
 
+const getFullUserByEmail: (email: string) => Promise<User> = async (email) => {
+  const user = await prisma.user.findUnique({
+    where: { email },
+  });
+  return user;
+};
+
 const getUserByEmail: (
   email: string
 ) => Promise<Pick<User, 'email'> | null> = async (email) => {
@@ -167,4 +174,11 @@ const testingQueries = {
   },
 };
 
-export { query, getUserById, createUser, getUserByEmail, testingQueries };
+export {
+  query,
+  createUser,
+  getUserById,
+  getFullUserByEmail,
+  getUserByEmail,
+  testingQueries,
+};
