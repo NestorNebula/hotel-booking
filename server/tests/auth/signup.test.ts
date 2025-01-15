@@ -26,7 +26,7 @@ describe('signup', () => {
       .send({
         firstName: data.users[0].firstName,
         lastName: data.users[1].lastName,
-        email: data.users[0].email,
+        email: 'this@email.com',
         password: 'password',
       })
       .type('form')
