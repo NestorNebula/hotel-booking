@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import 'dotenv/config';
-import type { PrismaError, QueryResponse } from '@utils/ts/types';
+import type { PrismaError, QueryResponse, RequestUser } from '@utils/ts/types';
 import type { Reservation, Room, Stay, User } from '@prisma/client';
 
 const isTesting = process.env.NODE_ENV === 'test';
@@ -32,6 +32,17 @@ async function query<Type>(cb: () => Type): Promise<QueryResponse<Type>> {
 }
 
 // User queries
+
+const getUserById: (id: number) => Promise<RequestUser> = async (id) => {
+  const user = await prisma.user.findUnique({
+    where: { id },
+    omit: {
+      password: true,
+    },
+  });
+  if (!user) throw new Error('User not found.');
+  return user;
+};
 
 // Room queries
 
@@ -122,4 +133,4 @@ const testingQueries = {
   },
 };
 
-export { query, testingQueries };
+export { query, getUserById, testingQueries };
