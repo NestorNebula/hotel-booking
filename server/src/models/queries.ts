@@ -21,7 +21,9 @@ const isPrismaError = (err: any): err is PrismaError => {
   return (err as PrismaError).clientVersion !== undefined;
 };
 
-async function query<Type>(cb: () => Type): Promise<QueryResponse<Type>> {
+async function query<Type>(
+  cb: () => Promise<Type>
+): Promise<QueryResponse<Type>> {
   try {
     const result = await cb();
     return { result, error: null };
