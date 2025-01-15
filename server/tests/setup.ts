@@ -1,11 +1,21 @@
 import request from 'supertest';
 import express from 'express';
-import { populateDb, emptyDb } from './data';
+import { populateDb, emptyDb, type Data } from './data';
 const app = express();
+let dbData: Data = {
+  reservations: [],
+  rooms: [],
+  stays: [],
+  users: [],
+};
 
 beforeAll(async () => {
-  const result = await populateDb();
-  if (!result.success) throw new Error('Error when populating DB.');
+  const { data, success } = await populateDb();
+  if (!success) throw new Error('Error when populating DB.');
+  dbData = data;
+  app.use((req, res, next) => {
+    req.user = data.users[0];
+  });
 });
 
 afterAll(async () => {
@@ -15,4 +25,4 @@ afterAll(async () => {
 
 app.use(express.urlencoded({ extended: false }));
 
-export { request, app };
+export { request, app, dbData as data };

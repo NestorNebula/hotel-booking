@@ -124,4 +124,4 @@ const emptyDb = async () => {
   return !result.error;
 };
 
-export { getData, populateDb, emptyDb };
+export { getData, populateDb, emptyDb, type Data };
