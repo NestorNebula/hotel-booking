@@ -72,6 +72,7 @@ const getFullUserByEmail: (email: string) => Promise<User> = async (email) => {
   const user = await prisma.user.findUnique({
     where: { email },
   });
+  if (!user) throw new Sperror('No User', "The user doesn't exist.", 400);
   return user;
 };
 
