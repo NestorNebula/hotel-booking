@@ -3,7 +3,7 @@ import 'dotenv/config';
 import type { PrismaError, QueryResponse, RequestUser } from '@utils/ts/types';
 import type { Reservation, Room, Stay, User } from '@prisma/client';
 import Sperror from 'sperror';
-import { PrismaClientInitializationError } from '@prisma/client/runtime/library';
+import bcrypt from 'bcrypt';
 
 const isTesting = process.env.NODE_ENV === 'test';
 const dbUrl = isTesting
@@ -69,7 +69,7 @@ const testingQueries = {
         firstName: user.firstName,
         lastName: user.lastName,
         email: user.email,
-        password: user.password,
+        password: bcrypt.hashSync(user.password, 10),
         isAdmin: user.isAdmin,
       },
     });
