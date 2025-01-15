@@ -43,6 +43,20 @@ async function query<Type>(
 
 // User queries
 
+const createUser: (
+  user: Omit<User, 'id' | 'isAdmin'>
+) => Promise<Omit<User, 'password'>> = async (user) => {
+  const newUser = await prisma.user.create({
+    data: {
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      password: user.password,
+    },
+  });
+  return newUser;
+};
+
 const getUserById: (id: number) => Promise<RequestUser> = async (id) => {
   const user = await prisma.user.findUnique({
     where: { id },
@@ -153,4 +167,4 @@ const testingQueries = {
   },
 };
 
-export { query, getUserById, getUserByEmail, testingQueries };
+export { query, getUserById, createUser, getUserByEmail, testingQueries };
