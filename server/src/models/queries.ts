@@ -2,6 +2,8 @@ import { PrismaClient } from '@prisma/client';
 import 'dotenv/config';
 import type { PrismaError, QueryResponse, RequestUser } from '@utils/ts/types';
 import type { Reservation, Room, Stay, User } from '@prisma/client';
+import Sperror from 'sperror';
+import { PrismaClientInitializationError } from '@prisma/client/runtime/library';
 
 const isTesting = process.env.NODE_ENV === 'test';
 const dbUrl = isTesting
@@ -26,7 +28,13 @@ async function query<Type>(cb: () => Type): Promise<QueryResponse<Type>> {
   } catch (e) {
     return {
       result: null,
-      error: isPrismaError(e) ? e.message : 'Unknown Error',
+      error: isPrismaError(e)
+        ? { type: 'Prisma', message: e.message }
+        : e instanceof Sperror
+        ? { type: 'Sperror', message: e.msg ?? e.title, code: e.statusCode }
+        : e instanceof Error
+        ? { type: 'Unexpected', message: e.message }
+        : { type: 'Unexpected', message: 'Unexpected error during query.' },
     };
   }
 }
