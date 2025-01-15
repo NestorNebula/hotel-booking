@@ -68,7 +68,7 @@ const testingQueries = {
         id: user.id,
         firstName: user.firstName,
         lastName: user.lastName,
-        email: user.email,
+        email: user.email.toLowerCase(),
         password: bcrypt.hashSync(user.password, 10),
         isAdmin: user.isAdmin,
       },
