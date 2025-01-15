@@ -21,4 +21,6 @@ interface QueryResponse<Type> {
   error: string | null;
 }
 
-export type { Model, PrismaError, QueryResponse };
+type RequestUser = Omit<User, 'password'>;
+
+export type { Model, PrismaError, QueryResponse, RequestUser };
