@@ -14,6 +14,9 @@ const errors = {
   minLength: (fieldName: string, min: number) => {
     return `${fieldName} must have at least ${min} characters.`;
   },
+  type: (fieldName: string, type: string) => {
+    return `${fieldName} must be a ${type}.`;
+  },
 };
 
 const validateNewUser = [
@@ -58,6 +61,24 @@ const validateLoginData = [
     .withMessage(errors.minLength('Password', 8)),
 ];
 
+const validateReservation = [
+  body('roomId')
+    .isNumeric()
+    .withMessage(errors.type('RoomId', 'number'))
+    .notEmpty()
+    .withMessage(errors.empty('RoomId')),
+  body('date')
+    .isDate()
+    .withMessage(errors.type('Date', 'date'))
+    .notEmpty()
+    .withMessage(errors.empty('Date')),
+];
+
 const validateAdminPassword = [body('password').blacklist('\\W')];
 
-export { validateNewUser, validateLoginData, validateAdminPassword };
+export {
+  validateNewUser,
+  validateLoginData,
+  validateAdminPassword,
+  validateReservation,
+};
