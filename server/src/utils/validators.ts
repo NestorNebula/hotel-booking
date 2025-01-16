@@ -51,4 +51,6 @@ const validateLoginData = [
     .withMessage(errors.minLength('Password', 8)),
 ];
 
-export { validateNewUser, validateLoginData };
+const validateAdminPassword = [body('password').blacklist('\\W')];
+
+export { validateNewUser, validateLoginData, validateAdminPassword };
