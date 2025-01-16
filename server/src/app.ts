@@ -16,25 +16,25 @@ app.use('/auth', routes.auth);
 
 app.use(
   '/reservations',
-  passport.authenticate('jwt', { failWithError: true }),
+  passport.authenticate('jwt', { session: false, failWithError: true }),
   handleError,
   routes.reservation
 );
 app.use(
   '/rooms',
-  passport.authenticate('jwt', { failWithError: true }),
+  passport.authenticate('jwt', { session: false, failWithError: true }),
   handleError,
   routes.room
 );
 app.use(
   '/stays',
-  passport.authenticate('jwt', { failWithError: true }),
+  passport.authenticate('jwt', { session: false, failWithError: true }),
   handleError,
   routes.stay
 );
 app.use(
   '/users',
-  passport.authenticate('jwt', { failWithError: true }),
+  passport.authenticate('jwt', { session: false, failWithError: true }),
   handleError,
   routes.user
 );
