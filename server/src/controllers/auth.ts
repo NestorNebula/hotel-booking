@@ -1,4 +1,5 @@
-import { Request, Response, NextFunction } from 'express';
+import { Response, NextFunction } from 'express';
+import { Request } from '@utils/ts/types';
 import { validationResult } from 'express-validator';
 import { query, createUser, getFullUserByEmail } from '@models/queries';
 import bcrypt from 'bcrypt';
