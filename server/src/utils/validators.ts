@@ -2,6 +2,9 @@ import { body } from 'express-validator';
 import { query, getUserByEmail } from '@models/queries';
 
 const errors = {
+  empty: (fieldName: string) => {
+    return `${fieldName} cannot be empty.`;
+  },
   format: (fieldName: string, example: string) => {
     return `${fieldName} must be in correct format. (${example})`;
   },
@@ -18,12 +21,16 @@ const validateNewUser = [
     .trim()
     .blacklist('<>/@_.&"();,:+=*%!?')
     .isLength({ max: 25 })
-    .withMessage(errors.maxLength('First Name', 25)),
+    .withMessage(errors.maxLength('First Name', 25))
+    .notEmpty()
+    .withMessage(errors.empty('First Name')),
   body('lastName')
     .trim()
     .blacklist('<>/@_.&"();,:+=*%!?')
     .isLength({ max: 25 })
-    .withMessage(errors.maxLength('Last Name', 25)),
+    .withMessage(errors.maxLength('Last Name', 25))
+    .notEmpty()
+    .withMessage(errors.empty('Last Name')),
   body('email')
     .isEmail()
     .withMessage(errors.format('Email', 'valid@email.com'))
