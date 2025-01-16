@@ -35,10 +35,10 @@ const signup = async (req: Request, res: Response, next: NextFunction) => {
     );
     return;
   }
-  const token = getToken(user.id);
-  const refreshToken = getRefreshToken(user.id);
-  setToken(res, token);
-  setRefreshToken(res, refreshToken);
+  const token = getToken(user.id, '15m');
+  const refreshToken = getRefreshToken(user.id, '7d');
+  setToken(res, token, 900000);
+  setRefreshToken(res, refreshToken, 7);
   res.json({ success: true });
 };
 
@@ -62,14 +62,18 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
     next(new Sperror('Incorrect password', "The passwords don't match.", 400));
     return;
   }
-  const token = getToken(user.id);
-  const refreshToken = getRefreshToken(user.id);
-  setToken(res, token);
-  setRefreshToken(res, refreshToken);
+  const token = getToken(user.id, '15m');
+  const refreshToken = getRefreshToken(user.id, '7d');
+  setToken(res, token, 900000);
+  setRefreshToken(res, refreshToken, 7);
   res.json({ success: true });
 };
 
-const guest = () => {};
+const guest = (req: Request, res: Response, next: NextFunction) => {
+  const token = getToken(0, '5m');
+  setToken(res, token, 300000);
+  res.json({ success: true });
+};
 
 const refresh = () => {};
 
