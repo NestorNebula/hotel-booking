@@ -18,7 +18,7 @@ describe('post', () => {
   it('lets doing multiple reservations for different users on rooms having more than 1 as numberPerDay', () => {
     return request(app)
       .post('/')
-      .send({ roomId: data.rooms[1], date: data.reservations[1].date })
+      .send({ roomId: data.rooms[1].id, date: data.reservations[1].date })
       .type('form')
       .expect(200)
       .then((res) => {
@@ -31,7 +31,7 @@ describe('post', () => {
   it('returns 403 when trying to book a room already booked on a specific day', (done) => {
     request(app)
       .post('/')
-      .send({ roomId: data.rooms[2], date: data.reservations[2].date })
+      .send({ roomId: data.rooms[2].id, date: data.reservations[2].date })
       .type('form')
       .expect(403, done);
   });
@@ -39,7 +39,8 @@ describe('post', () => {
   it('returns 400 when trying to book a room already booked by the same user on the same day', () => {
     return request(app)
       .post('/')
-      .send({ roomId: data.rooms[0], date: data.reservations[0].date })
+      .send({ roomId: data.rooms[0].id, date: data.reservations[0].date })
+      .type('form')
       .expect(400)
       .then((res) => {
         expect(res.body.error.msg).toMatch(
