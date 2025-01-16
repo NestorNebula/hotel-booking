@@ -7,6 +7,7 @@ import {
   getUserByEmail,
   updateUserStatus,
 } from './userQueries';
+import { createReservation } from './reservationQueries';
 
 export {
   query,
@@ -16,4 +17,5 @@ export {
   getFullUserByEmail,
   getUserByEmail,
   updateUserStatus,
+  createReservation,
 };
