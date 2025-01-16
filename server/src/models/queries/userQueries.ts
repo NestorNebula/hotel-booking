@@ -46,4 +46,22 @@ const getUserByEmail: (
   return user;
 };
 
-export { createUser, getUserById, getFullUserByEmail, getUserByEmail };
+const updateUserStatus: (
+  userId: number,
+  isAdmin: boolean
+) => Promise<Pick<User, 'isAdmin'>> = async (userId, isAdmin = true) => {
+  const user = await prisma.user.update({
+    where: { id: userId },
+    data: { isAdmin },
+    select: { isAdmin },
+  });
+  return user;
+};
+
+export {
+  createUser,
+  getUserById,
+  getFullUserByEmail,
+  getUserByEmail,
+  updateUserStatus,
+};
