@@ -68,7 +68,13 @@ const validateReservation = [
     .notEmpty()
     .withMessage(errors.empty('RoomId')),
   body('date')
-    .isDate()
+    .custom((date: string) => {
+      const stringToDate = new Date(date);
+      if (typeof stringToDate.getDate() === 'number') {
+        return true;
+      }
+      return false;
+    })
     .withMessage(errors.type('Date', 'date'))
     .notEmpty()
     .withMessage(errors.empty('Date')),
