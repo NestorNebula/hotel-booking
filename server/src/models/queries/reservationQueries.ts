@@ -1,5 +1,5 @@
 import { prisma } from './setup';
-import { Prisma, Reservation, Room } from '@prisma/client';
+import { Reservation } from '@prisma/client';
 
 const createReservation: (
   reservation: Reservation
@@ -40,22 +40,17 @@ const getReservation: (
   return reservation;
 };
 
-async function getAllRoomReservations(
-  roomId: number
-): Promise<(Reservation & { room: Room })[]>;
+async function getAllRoomReservations(roomId: number): Promise<Reservation[]>;
 async function getAllRoomReservations(
   roomId: number,
   date: Date
-): Promise<(Reservation & { room: Room })[]>;
+): Promise<Reservation[]>;
 async function getAllRoomReservations(
   roomId: number,
   date?: Date
-): Promise<(Reservation & { room: Room })[]> {
+): Promise<Reservation[]> {
   const reservations = await prisma.reservation.findMany({
     where: { ...(date ? { roomId, date } : { roomId }) },
-    include: {
-      room: true,
-    },
   });
   return reservations;
 }
