@@ -22,4 +22,6 @@ export {
   getUserByEmail,
   updateUserStatus,
   createReservation,
+  getReservation,
+  getAllRoomReservations,
 };
