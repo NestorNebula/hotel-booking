@@ -15,6 +15,8 @@ namespace CustomRequest {
     lastName: string;
     email: string;
     password: string;
+    roomId: string;
+    date: string;
   }
 
   export interface Query extends core.Query {}
