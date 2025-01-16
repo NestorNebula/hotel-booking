@@ -1,5 +1,5 @@
 import { prisma } from './setup';
-import { Reservation } from '@prisma/client';
+import { Prisma, Reservation, Room } from '@prisma/client';
 
 const createReservation: (
   reservation: Reservation
@@ -23,4 +23,41 @@ const createReservation: (
   return newReservation;
 };
 
-export { createReservation };
+const getReservation: (
+  userId: number,
+  roomId: number,
+  date: Date
+) => Promise<Reservation | null> = async (userId, roomId, date) => {
+  const reservation = await prisma.reservation.findUnique({
+    where: {
+      userId_roomId_date: {
+        userId,
+        roomId,
+        date,
+      },
+    },
+  });
+  return reservation;
+};
+
+async function getAllRoomReservations(
+  roomId: number
+): Promise<(Reservation & { room: Room })[]>;
+async function getAllRoomReservations(
+  roomId: number,
+  date: Date
+): Promise<(Reservation & { room: Room })[]>;
+async function getAllRoomReservations(
+  roomId: number,
+  date?: Date
+): Promise<(Reservation & { room: Room })[]> {
+  const reservations = await prisma.reservation.findMany({
+    where: { ...(date ? { roomId, date } : { roomId }) },
+    include: {
+      room: true,
+    },
+  });
+  return reservations;
+}
+
+export { createReservation, getReservation, getAllRoomReservations };
