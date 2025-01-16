@@ -8,13 +8,13 @@ declare module 'jsonwebtoken' {
   }
 }
 
-const getToken = (id: number) => {
-  const token = jwt.sign({ id }, process.env.T!, { expiresIn: '15m' });
+const getToken = (id: number, expiresIn: string) => {
+  const token = jwt.sign({ id }, process.env.T!, { expiresIn });
   return token;
 };
 
-const getRefreshToken = (id: number) => {
-  const token = jwt.sign({ id }, process.env.R!, { expiresIn: '7d' });
+const getRefreshToken = (id: number, expiresIn: string) => {
+  const token = jwt.sign({ id }, process.env.R!, { expiresIn });
   return token;
 };
 
@@ -31,19 +31,23 @@ const verifyRefreshToken = (token: string) => {
   }
 };
 
-const setToken = (res: Response, token: string) => {
+const setToken = (res: Response, token: string, maxMilliseconds: number) => {
   res.cookie('token', token, {
     httpOnly: true,
-    maxAge: 900000,
+    maxAge: maxMilliseconds,
     partitioned: true,
     sameSite: 'none',
     secure: true,
   });
 };
 
-const setRefreshToken = (res: Response, token: string) => {
+const setRefreshToken = (
+  res: Response,
+  token: string,
+  durationDays: number
+) => {
   const expirationDate = new Date(Date.now());
-  expirationDate.setDate(expirationDate.getDate() + 7);
+  expirationDate.setDate(expirationDate.getDate() + durationDays);
   res.cookie('refresh', token, {
     expires: expirationDate,
     httpOnly: true,
