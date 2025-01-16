@@ -1,9 +1,5 @@
 import passport from 'passport';
-import {
-  ExtractJwt,
-  Strategy,
-  StrategyOptionsWithoutRequest,
-} from 'passport-jwt';
+import { Strategy, StrategyOptionsWithoutRequest } from 'passport-jwt';
 import { Request } from 'express';
 import { query, getUserById } from '@models/queries';
 import 'dotenv/config';
