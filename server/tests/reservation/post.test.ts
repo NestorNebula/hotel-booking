@@ -28,12 +28,12 @@ describe('post', () => {
       });
   });
 
-  it('returns 400 when trying to book a room already booked on a specific day', (done) => {
+  it('returns 403 when trying to book a room already booked on a specific day', (done) => {
     request(app)
       .post('/')
       .send({ roomId: data.rooms[2], date: data.reservations[2].date })
       .type('form')
-      .expect(400, done);
+      .expect(403, done);
   });
 
   it('returns 400 when trying to book a room already booked by the same user on the same day', () => {
