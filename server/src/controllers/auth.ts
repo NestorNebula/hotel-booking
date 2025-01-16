@@ -1,7 +1,12 @@
 import { Response, NextFunction } from 'express';
 import { Request } from '@utils/ts/types';
 import { validationResult } from 'express-validator';
-import { query, createUser, getFullUserByEmail } from '@models/queries';
+import {
+  query,
+  createUser,
+  getFullUserByEmail,
+  updateUserStatus,
+} from '@models/queries';
 import bcrypt from 'bcrypt';
 import {
   getToken,
@@ -11,6 +16,7 @@ import {
   verifyRefreshToken,
 } from '@utils/jwt';
 import Sperror from 'sperror';
+import 'dotenv/config';
 
 const signup = async (req: Request, res: Response, next: NextFunction) => {
   const result = validationResult(req);
@@ -96,6 +102,18 @@ const refresh = (req: Request, res: Response, next: NextFunction) => {
   );
 };
 
-const admin = () => {};
+const admin = async (req: Request, res: Response, next: NextFunction) => {
+  const password = req.body.password;
+  if (password) {
+    const match = password === process.env.ADMIN_PWD;
+    if (match) {
+      const { result: admin, error } = await query(() =>
+        updateUserStatus(req.user!.id, true)
+      );
+      res.json({ success: !error && admin.isAdmin });
+    }
+  }
+  next(new Sperror('Password error', 'No/wrong password submitted.', 400));
+};
 
 export { signup, login, guest, refresh, admin };
