@@ -5,6 +5,7 @@ import {
   getUserById,
   getFullUserByEmail,
   getUserByEmail,
+  updateUserStatus,
 } from './userQueries';
 
 export {
@@ -14,4 +15,5 @@ export {
   getUserById,
   getFullUserByEmail,
   getUserByEmail,
+  updateUserStatus,
 };
