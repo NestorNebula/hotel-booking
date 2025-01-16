@@ -6,6 +6,25 @@ import {
   PrismaClientValidationError,
 } from '@prisma/client/runtime/library';
 import { Reservation, Room, Stay, User } from '@prisma/client';
+import express from 'express';
+import * as core from 'express-serve-static-core';
+
+namespace CustomRequest {
+  export interface Body {
+    firstName: string;
+    lastName: string;
+    email: string;
+    password: string;
+  }
+
+  export interface Query extends core.Query {}
+
+  export interface Params extends core.ParamsDictionary {
+    roomId: string;
+    stayId: string;
+    userId: string;
+  }
+}
 
 type Model = Reservation | Room | Stay | User;
 
@@ -34,6 +53,13 @@ interface FailedQueryResponse {
 
 type QueryResponse<Type> = SuccessfulQueryResponse<Type> | FailedQueryResponse;
 
+interface Request<
+  Params = CustomRequest.Params,
+  ResBody = any,
+  ReqBody = CustomRequest.Body,
+  ReqQuery = CustomRequest.Query
+> extends express.Request<Params, ResBody, ReqBody, ReqQuery> {}
+
 type RequestUser = Omit<User, 'password'>;
 
-export type { Model, PrismaError, QueryResponse, RequestUser };
+export type { Model, PrismaError, QueryResponse, Request, RequestUser };
