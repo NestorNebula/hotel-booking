@@ -8,6 +8,7 @@ import {
   getRefreshToken,
   setToken,
   setRefreshToken,
+  verifyRefreshToken,
 } from '@utils/jwt';
 import Sperror from 'sperror';
 
@@ -75,7 +76,25 @@ const guest = (req: Request, res: Response, next: NextFunction) => {
   res.json({ success: true });
 };
 
-const refresh = () => {};
+const refresh = (req: Request, res: Response, next: NextFunction) => {
+  const refresh = req.cookies.refresh;
+  if (refresh) {
+    const userId = verifyRefreshToken(refresh);
+    if (userId) {
+      const token = getToken(userId, '15m');
+      setToken(res, token, 900000);
+      res.json({ success: true });
+      return;
+    }
+  }
+  next(
+    new Sperror(
+      'Error during token refresh',
+      'No token or invalid token provided',
+      400
+    )
+  );
+};
 
 const admin = () => {};
 
