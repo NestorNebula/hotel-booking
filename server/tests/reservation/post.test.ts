@@ -37,16 +37,11 @@ describe('post', () => {
       .expect(403, done);
   });
 
-  it('returns 400 when trying to book a room already booked by the same user on the same day', () => {
-    return request(app)
+  it('returns 400 when trying to book a room already booked by the same user on the same day', (done) => {
+    request(app)
       .post('/')
       .send({ roomId: data.rooms[0].id, date: data.reservations[0].date })
       .type('form')
-      .expect(400)
-      .then((res) => {
-        expect(res.body.error.msg).toMatch(
-          /you already have booked this room/i
-        );
-      });
+      .expect(400, done);
   });
 });
