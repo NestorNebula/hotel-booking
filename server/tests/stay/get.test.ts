@@ -8,6 +8,7 @@ describe('get', () => {
   it('returns existing stay', () => {
     return request(app)
       .get(`/${data.stays[0].id}`)
+      .expect(200)
       .then((res) => {
         expect(res.body.stay.id).toBe(data.stays[0].id);
       });
