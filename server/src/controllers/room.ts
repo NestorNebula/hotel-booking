@@ -1,6 +1,11 @@
-import type { QueryResponse, Request } from '@utils/ts/types';
+import type { Request } from '@utils/ts/types';
 import type { Response, NextFunction } from 'express';
-import { query, getAllRoomReservations, getRoom } from '@models/queries';
+import {
+  query,
+  getAllRoomReservations,
+  getRoom,
+  getAllRooms,
+} from '@models/queries';
 import Sperror from 'sperror';
 import { Reservation, User } from '@prisma/client';
 
@@ -54,6 +59,16 @@ const get = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-const getAll = () => {};
+const getAll = async (req: Request, res: Response, next: NextFunction) => {
+  const { result: rooms, error } =
+    req.query.reservations !== undefined && req.user!.isAdmin
+      ? await query(() => getAllRooms(true))
+      : await query(() => getAllRooms());
+  if (error) {
+    next(new Sperror('Server error', error.message, 500));
+    return;
+  }
+  res.json({ rooms });
+};
 
 export { get, getAll };
