@@ -4,6 +4,6 @@ import { validateReservation } from '@utils/validators';
 const router = Router();
 
 router.post('/', validateReservation, reservation.post);
-router.delete('/', reservation.remove);
+router.delete('/', validateReservation, reservation.remove);
 
 export default router;
