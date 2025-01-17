@@ -30,7 +30,7 @@ describe('remove', () => {
       .expect(400, done);
   });
 
-  it("returns 403 when trying to remove someone else's reservation", (done) => {
+  it("returns 400 when trying to remove someone else's reservation", (done) => {
     request(app)
       .delete('/')
       .send({
@@ -38,7 +38,7 @@ describe('remove', () => {
         date: data.reservations[1].date,
       })
       .type('form')
-      .expect(403, done);
+      .expect(400, done);
   });
 
   it('returns 400 when trying to remove a reservation that is part of a stay', (done) => {
