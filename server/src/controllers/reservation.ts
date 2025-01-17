@@ -5,6 +5,7 @@ import {
   createReservation,
   getReservation,
   getAllRoomReservations,
+  deleteReservation,
   getRoom,
 } from '@models/queries';
 import { validationResult } from 'express-validator';
@@ -66,6 +67,60 @@ const post = async (req: Request, res: Response, next: NextFunction) => {
   res.json({ reservation });
 };
 
-const remove = () => {};
+const remove = async (req: Request, res: Response, next: NextFunction) => {
+  const result = validationResult(req);
+  if (!result.isEmpty()) {
+    res.status(400).json({ errors: result.array() });
+    return;
+  }
+  const date = new Date(req.body.date);
+  date.setUTCHours(0, 0, 0, 0);
+  const { result: reservation, error: getReservationError } = await query(() =>
+    getReservation(req.user!.id, Number(req.body.roomId), date)
+  );
+  if (getReservationError) {
+    next(new Sperror('Server error', getReservationError.message, 500));
+    return;
+  }
+  if (!reservation) {
+    next(
+      new Sperror(
+        'Reservation not found',
+        "The reservation doesn't exist.",
+        400
+      )
+    );
+    return;
+  }
+  if (reservation.stayId) {
+    next(
+      new Sperror(
+        "Reservation can't be removed",
+        'Reservation is part of a stay. Please remove the stay instead.',
+        400
+      )
+    );
+    return;
+  }
+  const { result: deletedReservation, error: deleteReservationError } =
+    await query(() =>
+      deleteReservation(
+        reservation.userId,
+        reservation.roomId,
+        reservation.date
+      )
+    );
+  if (deleteReservationError) {
+    next(
+      new Sperror(
+        'Error during reservation deletion',
+        deleteReservationError.message,
+        500
+      )
+    );
+    return;
+  }
+  res.json({ reservation: deletedReservation });
+};
 
 export { post, remove };
