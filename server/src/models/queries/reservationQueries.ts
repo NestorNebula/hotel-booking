@@ -55,4 +55,26 @@ async function getAllRoomReservations(
   return reservations;
 }
 
-export { createReservation, getReservation, getAllRoomReservations };
+const deleteReservation: (
+  userId: number,
+  roomId: number,
+  date: Date
+) => Promise<Reservation> = async (userId, roomId, date) => {
+  const reservation = await prisma.reservation.delete({
+    where: {
+      userId_roomId_date: {
+        userId,
+        roomId,
+        date,
+      },
+    },
+  });
+  return reservation;
+};
+
+export {
+  createReservation,
+  getReservation,
+  getAllRoomReservations,
+  deleteReservation,
+};

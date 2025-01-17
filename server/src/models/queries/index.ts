@@ -12,6 +12,7 @@ import {
   createReservation,
   getReservation,
   getAllRoomReservations,
+  deleteReservation,
 } from './reservationQueries';
 
 export {
@@ -26,4 +27,5 @@ export {
   createReservation,
   getReservation,
   getAllRoomReservations,
+  deleteReservation,
 };
