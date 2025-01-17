@@ -1,5 +1,5 @@
 import { prisma } from './setup';
-import { Reservation } from '@prisma/client';
+import { Reservation, User } from '@prisma/client';
 
 const createReservation: (
   reservation: Reservation
@@ -47,10 +47,21 @@ async function getAllRoomReservations(
 ): Promise<Reservation[]>;
 async function getAllRoomReservations(
   roomId: number,
-  date?: Date
+  users: true
+): Promise<(Reservation & { user: User })[]>;
+async function getAllRoomReservations(
+  roomId: number,
+  dateOrUsers?: Date | true
 ): Promise<Reservation[]> {
   const reservations = await prisma.reservation.findMany({
-    where: { ...(date ? { roomId, date } : { roomId }) },
+    where: {
+      ...(typeof dateOrUsers === 'object'
+        ? { roomId, date: dateOrUsers }
+        : { roomId }),
+    },
+    include: {
+      user: dateOrUsers === true,
+    },
   });
   return reservations;
 }
