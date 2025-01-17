@@ -23,8 +23,8 @@ describe('post', () => {
       .type('form')
       .expect(200)
       .then((res) => {
-        expect(res.body.reservation.date.getDate()).toBe(
-          data.reservations[1].date
+        expect(new Date(res.body.reservation.date).getDate()).toBe(
+          data.reservations[1].date.getDate()
         );
       });
   });
