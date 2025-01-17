@@ -5,7 +5,7 @@ setUser();
 app.use('/', reservation);
 
 describe('post', () => {
-  it('returns reservation after creating it', () => {
+  it('returns reservation after creating reservation', () => {
     return request(app)
       .post('/')
       .send({ roomId: data.rooms[0].id, date: new Date(Date.now()) })
