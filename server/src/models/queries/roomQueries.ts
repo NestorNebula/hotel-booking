@@ -1,5 +1,5 @@
 import { prisma } from './setup';
-import { Room } from '@prisma/client';
+import { Reservation, Room, User } from '@prisma/client';
 import Sperror from 'sperror';
 
 const getRoom: (roomId: number) => Promise<Room> = async (roomId) => {
@@ -10,4 +10,21 @@ const getRoom: (roomId: number) => Promise<Room> = async (roomId) => {
   return room;
 };
 
-export { getRoom };
+async function getAllRooms(): Promise<Room[]>;
+async function getAllRooms(
+  reservations: true
+): Promise<(Room & { reservations: (Reservation & { user: User })[] })[]>;
+async function getAllRooms(
+  reservations?: true
+): Promise<
+  Room[] | (Room & { reservations: (Reservation & { user: User })[] })[]
+> {
+  const rooms = await prisma.room.findMany({
+    include: {
+      ...(reservations ? { reservations: { include: { user: true } } } : {}),
+    },
+  });
+  return rooms;
+}
+
+export { getRoom, getAllRooms };
