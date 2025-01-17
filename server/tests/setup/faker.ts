@@ -13,7 +13,8 @@ function getFakeReservation({
   return {
     userId: userId ?? faker.number.int({ max: 1000000 }),
     roomId: roomId ?? faker.number.int({ max: 1000000 }),
-    date: date ?? faker.date.future({ years: 1 }),
+    date:
+      date ?? new Date(faker.date.future({ years: 1 }).setUTCHours(0, 0, 0, 0)),
     stayId: null,
   };
 }
@@ -36,11 +37,15 @@ function getFakeStay({
   userId?: number;
   roomId?: number;
 }): Stay {
-  const firstDay = faker.date.future({ years: 1 });
+  const firstDay = new Date(
+    faker.date.future({ years: 1 }).setUTCHours(0, 0, 0, 0)
+  );
   return {
     id: faker.number.int({ max: 1000000 }),
     firstDay,
-    lastDay: faker.date.soon({ days: 10, refDate: firstDay }),
+    lastDay: new Date(
+      faker.date.soon({ days: 10, refDate: firstDay }).setUTCHours(0, 0, 0, 0)
+    ),
     userId: userId ?? faker.number.int({ max: 1000000 }),
     roomId: roomId ?? faker.number.int({ max: 1000000 }),
   };
