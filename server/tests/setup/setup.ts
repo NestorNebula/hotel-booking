@@ -1,6 +1,7 @@
 import request from 'supertest';
-import express from 'express';
+import express, { Response, NextFunction } from 'express';
 import { populateDb, emptyDb, type Data } from './data';
+import { Request } from '@utils/ts/types';
 const app = express();
 let dbData: Data = {
   reservations: [],
@@ -9,13 +10,16 @@ let dbData: Data = {
   users: [],
 };
 
+const setUser = () =>
+  app.use((req: Request, res: Response, next: NextFunction) => {
+    req.user = dbData.users[0];
+    next();
+  });
+
 beforeAll(async () => {
   const { data, success } = await populateDb();
   if (!success) throw new Error('Error when populating DB.');
   dbData = data;
-  app.use((req, res, next) => {
-    req.user = data.users[0];
-  });
 });
 
 afterAll(async () => {
@@ -25,4 +29,4 @@ afterAll(async () => {
 
 app.use(express.urlencoded({ extended: false }));
 
-export { request, app, dbData as data };
+export { request, app, dbData as data, setUser };

@@ -1,6 +1,7 @@
-import { app, data, request } from 'tests/setup/setup';
+import { app, data, request, setUser } from 'tests/setup/setup';
 import { reservation } from '@routes';
 
+setUser();
 app.use('/', reservation);
 
 describe('post', () => {
