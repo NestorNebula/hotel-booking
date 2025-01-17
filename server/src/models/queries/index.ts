@@ -14,6 +14,7 @@ import {
   getAllRoomReservations,
   deleteReservation,
 } from './reservationQueries';
+import { getStay } from './stayQueries';
 
 export {
   query,
@@ -29,4 +30,5 @@ export {
   getReservation,
   getAllRoomReservations,
   deleteReservation,
+  getStay,
 };
