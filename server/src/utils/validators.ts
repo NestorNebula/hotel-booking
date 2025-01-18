@@ -82,7 +82,7 @@ const validateReservation = [
 
 const validateAdminPassword = [body('password').blacklist('\\W')];
 
-const validateStay = [
+const validateNewStay = [
   body('firstDay')
     .notEmpty()
     .withMessage(errors.empty('First name'))
@@ -122,10 +122,46 @@ const validateStay = [
     .withMessage(errors.type('RoomId', 'number')),
 ];
 
+const validateStay = [
+  body('firstDay')
+    .notEmpty()
+    .withMessage(errors.empty('First name'))
+    .custom((firstDay: string) => {
+      const firstDayToDate = new Date(firstDay);
+      if (typeof firstDayToDate.getDate() === 'number') {
+        return true;
+      }
+      return false;
+    })
+    .withMessage(errors.type('First day', 'date')),
+  body('lastDay')
+    .notEmpty()
+    .withMessage(errors.empty('Last name'))
+    .custom((lastDay: Date) => {
+      const lastDayToDate = new Date(lastDay);
+      if (typeof lastDayToDate.getDate() === 'number') {
+        return true;
+      }
+      return false;
+    })
+    .withMessage(errors.type('Last day', 'date'))
+    .custom((lastDay: Date, { req }) => {
+      const firstDayToDate = new Date(req.body.firstDay);
+      const lastDayToDate = new Date(lastDay);
+      firstDayToDate.setUTCHours(0, 0, 0, 0);
+      lastDayToDate.setUTCHours(0, 0, 0, 0);
+      return firstDayToDate < lastDayToDate;
+    })
+    .withMessage(
+      'First day and last day must have a difference of one day at least.'
+    ),
+];
+
 export {
   validateNewUser,
   validateLoginData,
   validateAdminPassword,
   validateReservation,
+  validateNewStay,
   validateStay,
 };
