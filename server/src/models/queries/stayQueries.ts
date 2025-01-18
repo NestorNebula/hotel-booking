@@ -41,4 +41,34 @@ const getStay: (stayId: number) => Promise<Stay> = async (stayId) => {
   return stay;
 };
 
-export { createStay, getStay };
+const updateStay: (
+  stay: Stay & { reservations: Reservation[] }
+) => Promise<Stay> = async (stay) => {
+  const updatedStay = await prisma.stay.update({
+    where: { id: stay.id },
+    data: {
+      firstDay: stay.firstDay,
+      lastDay: stay.lastDay,
+      reservations: {
+        connectOrCreate: stay.reservations.map((r) => ({
+          where: {
+            userId_roomId_date: {
+              userId: stay.userId,
+              roomId: stay.roomId,
+              date: r.date,
+            },
+          },
+          create: {
+            userId: stay.userId,
+            roomId: stay.roomId,
+            date: r.date,
+            stayId: stay.id,
+          },
+        })),
+      },
+    },
+  });
+  return updatedStay;
+};
+
+export { createStay, getStay, updateStay };
