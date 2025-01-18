@@ -42,7 +42,7 @@ const getStay: (stayId: number) => Promise<Stay> = async (stayId) => {
 };
 
 const updateStay: (
-  stay: Stay & { reservations: Reservation[] }
+  stay: Stay & { reservations: Omit<Reservation, 'stayId'>[] }
 ) => Promise<Stay> = async (stay) => {
   const updatedStay = await prisma.stay.update({
     where: { id: stay.id },
