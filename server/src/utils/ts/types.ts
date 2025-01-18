@@ -17,6 +17,8 @@ namespace CustomRequest {
     password: string;
     roomId: string;
     date: string;
+    firstDay: string;
+    lastDay: string;
   }
 
   export interface Query extends core.Query {
