@@ -62,15 +62,15 @@ describe('post', () => {
   });
 
   it('returns 403 when trying to book a stay on a room that is already booked', (done) => {
+    const firstDay = data.stays[2].firstDay;
+    firstDay.setDate(data.stays[2].firstDay.getDate() + 1);
+    const lastDay = data.stays[2].lastDay;
+    lastDay.setDate(data.stays[2].lastDay.getDate() + 1);
     request(app)
       .post('/')
       .send({
-        firstDay: data.stays[2].firstDay.setDate(
-          data.stays[2].firstDay.getDate() + 1
-        ),
-        lastDay: data.stays[2].lastDay.setDate(
-          data.stays[2].lastDay.getDate() + 1
-        ),
+        firstDay,
+        lastDay,
         roomId: data.stays[2].roomId,
       })
       .type('form')
