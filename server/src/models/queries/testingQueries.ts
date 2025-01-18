@@ -48,7 +48,7 @@ const testingQueries = {
   },
 
   __createTestStay: async (stay: Stay & { reservations: Reservation[] }) => {
-    await prisma.stay.create({
+    const newStay = await prisma.stay.create({
       data: {
         firstDay: stay.firstDay,
         lastDay: stay.lastDay,
@@ -71,6 +71,18 @@ const testingQueries = {
             },
           })),
         },
+      },
+    });
+    await prisma.stay.update({
+      where: {
+        id: newStay.id,
+      },
+      data: {
+        id: stay.id,
+      },
+      include: {
+        user: { include: { stays: true } },
+        room: { include: { stays: true } },
       },
     });
   },
