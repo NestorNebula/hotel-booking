@@ -68,6 +68,8 @@ const validateReservation = [
     .notEmpty()
     .withMessage(errors.empty('RoomId')),
   body('date')
+    .notEmpty()
+    .withMessage(errors.empty('Date'))
     .custom((date: string) => {
       const stringToDate = new Date(date);
       if (typeof stringToDate.getDate() === 'number') {
@@ -75,16 +77,55 @@ const validateReservation = [
       }
       return false;
     })
-    .withMessage(errors.type('Date', 'date'))
-    .notEmpty()
-    .withMessage(errors.empty('Date')),
+    .withMessage(errors.type('Date', 'date')),
 ];
 
 const validateAdminPassword = [body('password').blacklist('\\W')];
+
+const validateStay = [
+  body('firstDay')
+    .notEmpty()
+    .withMessage(errors.empty('First name'))
+    .custom((firstDay: string) => {
+      const firstDayToDate = new Date(firstDay);
+      if (typeof firstDayToDate.getDate() === 'number') {
+        return true;
+      }
+      return false;
+    })
+    .withMessage(errors.type('First day', 'date')),
+  body('lastDay')
+    .notEmpty()
+    .withMessage(errors.empty('Last name'))
+    .custom((lastDay: Date) => {
+      const lastDayToDate = new Date(lastDay);
+      if (typeof lastDayToDate.getDate() === 'number') {
+        return true;
+      }
+      return false;
+    })
+    .withMessage(errors.type('Last day', 'date'))
+    .custom((lastDay: Date, { req }) => {
+      const firstDayToDate = new Date(req.body.firstDay);
+      const lastDayToDate = new Date(lastDay);
+      firstDayToDate.setUTCHours(0, 0, 0, 0);
+      lastDayToDate.setUTCHours(0, 0, 0, 0);
+      return firstDayToDate < lastDayToDate;
+    })
+    .withMessage(
+      'First day and last day must have a difference of one day at least.'
+    ),
+  body('roomId')
+    .notEmpty()
+    .withMessage(errors.empty('RoomId'))
+    .isNumeric()
+    .withMessage(errors.type('RoomId', 'number')),
+];
 
 export {
   validateNewUser,
   validateLoginData,
   validateAdminPassword,
   validateReservation,
+  validateStay,
 };

@@ -19,7 +19,9 @@ namespace CustomRequest {
     date: string;
   }
 
-  export interface Query extends core.Query {}
+  export interface Query extends core.Query {
+    reservations: string;
+  }
 
   export interface Params extends core.ParamsDictionary {
     roomId: string;
