@@ -69,10 +69,44 @@ const updateUserStatus: (
   return user;
 };
 
+const updateUser: (user: RequestUser) => Promise<RequestUser> = async (
+  user
+) => {
+  const updatedUser = await prisma.user.update({
+    where: {
+      id: user.id,
+    },
+    data: {
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+    },
+    omit: {
+      password: true,
+    },
+  });
+  return updatedUser;
+};
+
+const updateUserPassword: (
+  user: Pick<User, 'id' | 'password'>
+) => Promise<void> = async (user) => {
+  await prisma.user.update({
+    where: {
+      id: user.id,
+    },
+    data: {
+      password: user.password,
+    },
+  });
+};
+
 export {
   createUser,
   getUserById,
   getFullUserByEmail,
   getUserByEmail,
   updateUserStatus,
+  updateUser,
+  updateUserPassword,
 };
