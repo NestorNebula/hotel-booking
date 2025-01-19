@@ -34,7 +34,7 @@ describe('put', () => {
       });
   });
 
-  it.only('returns 400 when actual password is wrong', (done) => {
+  it('returns 400 when actual password is wrong', (done) => {
     request(app)
       .put(`/${data.users[0].id}?password`)
       .send({ password: 'probably not this', newPassword: 'password' })
