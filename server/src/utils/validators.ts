@@ -80,7 +80,7 @@ const validateUpdatedUser = [
       }
       return true;
     }),
-  body('password')
+  body('newPassword')
     .isLength({ min: 8 })
     .withMessage(errors.minLength('Password', 8)),
 ];
