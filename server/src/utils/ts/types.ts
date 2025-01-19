@@ -19,10 +19,12 @@ namespace CustomRequest {
     date: string;
     firstDay: string;
     lastDay: string;
+    newPassword: string;
   }
 
   export interface Query extends core.Query {
     reservations: string;
+    password: string;
   }
 
   export interface Params extends core.ParamsDictionary {
