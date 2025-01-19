@@ -6,6 +6,6 @@ const router = Router();
 router.get('/:stayId', stay.get);
 router.post('/', validateNewStay, stay.post);
 router.put('/:stayId', validateStay, stay.put);
-router.delete('/stayId', stay.remove);
+router.delete('/:stayId', stay.remove);
 
 export default router;
