@@ -61,12 +61,14 @@ const validateUpdatedUser = [
     .trim()
     .blacklist('<>/@_.&"();,:+=*%!?')
     .isLength({ max: 25 })
-    .withMessage(errors.maxLength('First Name', 25)),
+    .withMessage(errors.maxLength('First Name', 25))
+    .optional(),
   body('lastName')
     .trim()
     .blacklist('<>/@_.&"();,:+=*%!?')
     .isLength({ max: 25 })
-    .withMessage(errors.maxLength('Last Name', 25)),
+    .withMessage(errors.maxLength('Last Name', 25))
+    .optional(),
   body('email')
     .isEmail()
     .withMessage(errors.format('Email', 'valid@email.com'))
@@ -79,10 +81,12 @@ const validateUpdatedUser = [
         throw new Error('Email already taken.');
       }
       return true;
-    }),
+    })
+    .optional(),
   body('newPassword')
     .isLength({ min: 8 })
-    .withMessage(errors.minLength('Password', 8)),
+    .withMessage(errors.minLength('Password', 8))
+    .optional(),
 ];
 
 const validateLoginData = [
