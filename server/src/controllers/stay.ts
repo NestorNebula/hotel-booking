@@ -4,8 +4,10 @@ import {
   query,
   getStay,
   createStay,
+  updateStay,
   getRoom,
   getAllRoomReservations,
+  deleteReservation,
 } from '@models/queries';
 import Sperror from 'sperror';
 import { validationResult } from 'express-validator';
@@ -66,7 +68,7 @@ const post = async (req: Request, res: Response, next: NextFunction) => {
   const reservationsDuringStay = roomReservations.filter(
     (r) => r.date >= firstDay && r.date <= lastDay
   );
-  if (reservationsDuringStay) {
+  if (reservationsDuringStay.length) {
     if (reservationsDuringStay.some((r) => r.userId === req.user!.id)) {
       next(
         new Sperror(
@@ -86,7 +88,7 @@ const post = async (req: Request, res: Response, next: NextFunction) => {
       next(
         new Sperror(
           'No room available',
-          "One of the day during the stay doesn't have any room left.",
+          "One of the days during the stay doesn't have any room left.",
           403
         )
       );
@@ -109,7 +111,128 @@ const post = async (req: Request, res: Response, next: NextFunction) => {
   res.json({ stay });
 };
 
-const put = () => {};
+const put = async (req: Request, res: Response, next: NextFunction) => {
+  const result = validationResult(req);
+  if (!result.isEmpty()) {
+    res.status(400).json({ errors: result.array() });
+    next();
+  }
+  const { result: stay, error } = await query(() =>
+    getStay(Number(req.params.stayId))
+  );
+  if (error) {
+    next(
+      error.type === 'Sperror'
+        ? new Sperror('Stay not found', error.message, 400)
+        : new Sperror('Server error', error.message, 500)
+    );
+    return;
+  }
+  if (stay.userId !== req.user!.id) {
+    next(new Sperror('No update rights', "You can't update this stay.", 403));
+    return;
+  }
+  const firstDay = new Date(req.body.firstDay);
+  const lastDay = new Date(req.body.lastDay);
+  const stayReservations = getStayReservations(
+    req.user!.id,
+    stay.roomId,
+    firstDay,
+    lastDay
+  );
+  if (
+    stayReservations.every(
+      (r) => r.date < stay.firstDay || r.date > stay.lastDay
+    )
+  ) {
+    next(
+      new Sperror(
+        'Invalid dates',
+        'You cannot completely change your stay dates. Please cancel your stay and book another.',
+        400
+      )
+    );
+    return;
+  }
+  const oldStayReservations = getStayReservations(
+    req.user!.id,
+    stay.roomId,
+    stay.firstDay,
+    stay.lastDay
+  );
+  const reservationsToDelete = oldStayReservations.filter(
+    (r) => r.date < firstDay || r.date > lastDay
+  );
+  const { result: room, error: getRoomError } = await query(() =>
+    getRoom(stay.roomId)
+  );
+  if (getRoomError) {
+    next(
+      getRoomError.type === 'Sperror'
+        ? new Sperror('Room not found', getRoomError.message, 400)
+        : new Sperror('Server error', getRoomError.message, 500)
+    );
+    return;
+  }
+  const { result: roomReservations, error: getAllRoomReservationsError } =
+    await query(() => getAllRoomReservations(room.id));
+  if (getAllRoomReservationsError) {
+    next(new Sperror('Server error', getAllRoomReservationsError.message, 500));
+    return;
+  }
+  const reservationsDuringStay = roomReservations.filter(
+    (r) => r.date >= firstDay && r.date <= lastDay && r.userId !== req.user!.id
+  );
+  if (reservationsDuringStay.length) {
+    const isAvailable = checkRoomAvailability(
+      reservationsDuringStay,
+      stayReservations,
+      room
+    );
+    if (!isAvailable) {
+      next(
+        new Sperror(
+          'No room available',
+          "One of the days during the stay doesn't have any room left",
+          403
+        )
+      );
+      return;
+    }
+  }
+  for (let i = 0; i < reservationsToDelete.length; i++) {
+    const reservation = reservationsToDelete[i];
+    const { error: deleteReservationError } = await query(() =>
+      deleteReservation(
+        reservation.userId,
+        reservation.roomId,
+        reservation.date
+      )
+    );
+    if (deleteReservationError) {
+      next(
+        new Sperror('Server error', 'Error during reservation deletion.', 500)
+      );
+      return;
+    }
+  }
+  const { result: newStay, error: updateStayError } = await query(() =>
+    updateStay({
+      id: stay.id,
+      firstDay,
+      lastDay,
+      userId: stay.userId,
+      roomId: stay.roomId,
+      reservations: stayReservations,
+    })
+  );
+  if (updateStayError) {
+    console.log(updateStayError);
+    next(new Sperror('Server error', 'Error during stay update', 500));
+    return;
+  }
+  res.json({ stay: newStay });
+};
 
 const remove = () => {};
 
