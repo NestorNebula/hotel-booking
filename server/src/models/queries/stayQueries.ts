@@ -70,4 +70,18 @@ const updateStay: (
   return updatedStay;
 };
 
-export { createStay, getStay, updateStay };
+const deleteStay: (stayId: number) => Promise<Stay> = async (stayId) => {
+  await prisma.reservation.deleteMany({
+    where: {
+      stayId,
+    },
+  });
+  const deletedStay = await prisma.stay.delete({
+    where: {
+      id: stayId,
+    },
+  });
+  return deletedStay;
+};
+
+export { createStay, getStay, updateStay, deleteStay };
