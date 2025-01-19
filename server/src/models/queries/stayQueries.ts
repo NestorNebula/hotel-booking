@@ -62,7 +62,6 @@ const updateStay: (
             userId: stay.userId,
             roomId: stay.roomId,
             date: r.date,
-            stayId: stay.id,
           },
         })),
       },
