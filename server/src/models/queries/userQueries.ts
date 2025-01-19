@@ -39,6 +39,14 @@ async function getUserById(
   return user;
 }
 
+const getFullUserById: (id: number) => Promise<User> = async (id) => {
+  const user = await prisma.user.findUnique({
+    where: { id },
+  });
+  if (!user) throw new Sperror('No user', "The user doesn't exist.", 400);
+  return user;
+};
+
 const getFullUserByEmail: (email: string) => Promise<User> = async (email) => {
   const user = await prisma.user.findUnique({
     where: { email },
@@ -104,6 +112,7 @@ const updateUserPassword: (
 export {
   createUser,
   getUserById,
+  getFullUserById,
   getFullUserByEmail,
   getUserByEmail,
   updateUserStatus,

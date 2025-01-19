@@ -3,6 +3,7 @@ import testingQueries from './testingQueries';
 import {
   createUser,
   getUserById,
+  getFullUserById,
   getFullUserByEmail,
   getUserByEmail,
   updateUserStatus,
@@ -23,6 +24,7 @@ export {
   testingQueries,
   createUser,
   getUserById,
+  getFullUserById,
   getFullUserByEmail,
   getUserByEmail,
   updateUserStatus,
