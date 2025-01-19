@@ -35,6 +35,39 @@ const validateNewUser = [
     .notEmpty()
     .withMessage(errors.empty('Last Name')),
   body('email')
+    .notEmpty()
+    .withMessage(errors.empty('Email'))
+    .isEmail()
+    .withMessage(errors.format('Email', 'valid@email.com'))
+    .normalizeEmail()
+    .custom(async (email) => {
+      const { result, error } = await query(() => getUserByEmail(email));
+      if (error) {
+        throw new Error('Error during email availability check.');
+      } else if (result) {
+        throw new Error('Email already taken.');
+      }
+      return true;
+    }),
+  body('password')
+    .notEmpty()
+    .withMessage(errors.empty('Password'))
+    .isLength({ min: 8 })
+    .withMessage(errors.minLength('Password', 8)),
+];
+
+const validateUpdatedUser = [
+  body('firstName')
+    .trim()
+    .blacklist('<>/@_.&"();,:+=*%!?')
+    .isLength({ max: 25 })
+    .withMessage(errors.maxLength('First Name', 25)),
+  body('lastName')
+    .trim()
+    .blacklist('<>/@_.&"();,:+=*%!?')
+    .isLength({ max: 25 })
+    .withMessage(errors.maxLength('Last Name', 25)),
+  body('email')
     .isEmail()
     .withMessage(errors.format('Email', 'valid@email.com'))
     .normalizeEmail()
@@ -159,6 +192,7 @@ const validateStay = [
 
 export {
   validateNewUser,
+  validateUpdatedUser,
   validateLoginData,
   validateAdminPassword,
   validateReservation,
