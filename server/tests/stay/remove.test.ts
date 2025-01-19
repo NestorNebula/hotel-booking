@@ -6,25 +6,22 @@ setUser();
 app.use('/', stay);
 
 describe('remove', () => {
-  it('returns removed stay and delete associated reservations', async () => {
-    let reservation = await getReservation(
+  it('returns removed stay', () => {
+    return request(app)
+      .delete(`/${data.stays[0].id}`)
+      .expect(200)
+      .then((res) => {
+        expect(res.body.stay).toBeDefined();
+      });
+  });
+
+  it('delete stay associated reservations', async () => {
+    const reservation = await getReservation(
       data.users[0].id,
       data.stays[0].roomId,
       data.stays[0].firstDay
     );
-    expect(reservation).not.toBeNull();
-    return request(app)
-      .delete(`/${data.stays[0].id}`)
-      .expect(200)
-      .then(async (res) => {
-        expect(res.body.stay).toBeDefined();
-        reservation = await getReservation(
-          data.users[0].id,
-          data.stays[0].roomId,
-          data.stays[0].firstDay
-        );
-        expect(reservation).toBeNull();
-      });
+    expect(reservation).toBeNull();
   });
 
   it("returns 403 when trying to delete someone else's stay", (done) => {
