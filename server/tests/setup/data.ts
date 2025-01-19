@@ -92,8 +92,8 @@ const populateDb = async () => {
     for (let i = 0; i < data.stays.length; i++) {
       const stay = data.stays[i];
       const reservations: Reservation[] = [];
-      const currentDate = stay.firstDay;
-      while (currentDate.getDate() <= stay.lastDay.getDate()) {
+      const currentDate = new Date(stay.firstDay.toJSON());
+      while (currentDate.getTime() <= stay.lastDay.getTime()) {
         reservations.push({
           userId: stay.userId,
           roomId: stay.roomId,

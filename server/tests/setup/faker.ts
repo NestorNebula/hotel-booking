@@ -40,12 +40,18 @@ function getFakeStay({
   const firstDay = new Date(
     faker.date.future({ years: 1 }).setUTCHours(0, 0, 0, 0)
   );
+  let lastDay = new Date(
+    faker.date.soon({ days: 10, refDate: firstDay }).setUTCHours(0, 0, 0, 0)
+  );
+  while (firstDay.getTime() >= lastDay.getTime()) {
+    lastDay = new Date(
+      faker.date.soon({ days: 10, refDate: firstDay }).setUTCHours(0, 0, 0, 0)
+    );
+  }
   return {
     id: faker.number.int({ max: 1000000 }),
     firstDay,
-    lastDay: new Date(
-      faker.date.soon({ days: 10, refDate: firstDay }).setUTCHours(0, 0, 0, 0)
-    ),
+    lastDay,
     userId: userId ?? faker.number.int({ max: 1000000 }),
     roomId: roomId ?? faker.number.int({ max: 1000000 }),
   };
