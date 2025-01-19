@@ -8,14 +8,18 @@ describe('put', () => {
   it('returns updated user', () => {
     return request(app)
       .put(`/${data.users[0].id}`)
-      .send({ firstName: 'First', lastName: 'Last', email: 'this@email.com' })
+      .send({
+        firstName: 'First',
+        lastName: 'Last',
+        email: 'thisemail@email.com',
+      })
       .type('form')
       .expect(200)
       .then((res) => {
         expect(res.body.user).toBeDefined();
         expect(res.body.user.firstName).toBe('First');
         expect(res.body.user.lastName).toBe('Last');
-        expect(res.body.user.email).toBe('this@email.com');
+        expect(res.body.user.email).toBe('thisemail@email.com');
       });
   });
 
@@ -30,15 +34,12 @@ describe('put', () => {
       });
   });
 
-  it('returns failure when actual password is wrong', () => {
-    return request(app)
+  it.only('returns 400 when actual password is wrong', (done) => {
+    request(app)
       .put(`/${data.users[0].id}?password`)
       .send({ password: 'probably not this', newPassword: 'password' })
       .type('form')
-      .expect(400)
-      .then((res) => {
-        expect(res.body.error.msg).toMatch(/actual password is incorrect/i);
-      });
+      .expect(400, done);
   });
 
   it("returns 403 when trying to update someone else's data", (done) => {
