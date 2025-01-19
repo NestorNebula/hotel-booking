@@ -28,7 +28,7 @@ describe('put', () => {
       .put(`/${data.stays[0].id}`)
       .send({
         firstDay: data.stays[0].firstDay,
-        lastDay: data.stays[0].firstDay,
+        lastDay: data.stays[0].lastDay,
       })
       .type('form')
       .expect(200)
@@ -45,7 +45,7 @@ describe('put', () => {
     reservationDate.setDate(reservationDate.getDate() - 1);
     await testingQueries.__createTestReservation({
       userId: data.users[1].id,
-      roomId: data.stays[0].id,
+      roomId: data.stays[0].roomId,
       date: reservationDate,
       stayId: null,
     });
