@@ -1,6 +1,6 @@
 import { prisma } from './setup';
 import type { RequestUser } from '@utils/ts/types';
-import type { User } from '@prisma/client';
+import type { Reservation, User } from '@prisma/client';
 import Sperror from 'sperror';
 
 const createUser: (
@@ -17,16 +17,27 @@ const createUser: (
   return newUser;
 };
 
-const getUserById: (id: number) => Promise<RequestUser> = async (id) => {
+async function getUserById(id: number): Promise<RequestUser>;
+async function getUserById(
+  id: number,
+  reservations: true
+): Promise<RequestUser & { reservations: Reservation[] }>;
+async function getUserById(
+  id: number,
+  reservations?: true
+): Promise<RequestUser | (RequestUser & { reservations: Reservation[] })> {
   const user = await prisma.user.findUnique({
     where: { id },
+    include: {
+      reservations: reservations ? true : false,
+    },
     omit: {
       password: true,
     },
   });
   if (!user) throw new Sperror('No User', "The user doesn't exist.", 400);
   return user;
-};
+}
 
 const getFullUserByEmail: (email: string) => Promise<User> = async (email) => {
   const user = await prisma.user.findUnique({
