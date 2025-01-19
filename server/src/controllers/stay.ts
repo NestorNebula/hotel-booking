@@ -5,6 +5,7 @@ import {
   getStay,
   createStay,
   updateStay,
+  deleteStay,
   getRoom,
   getAllRoomReservations,
   deleteReservation,
@@ -234,6 +235,30 @@ const put = async (req: Request, res: Response, next: NextFunction) => {
   res.json({ stay: newStay });
 };
 
-const remove = () => {};
+const remove = async (req: Request, res: Response, next: NextFunction) => {
+  const { result: stay, error: getStayError } = await query(() =>
+    getStay(Number(req.params.stayId))
+  );
+  if (getStayError) {
+    next(
+      getStayError.type === 'Sperror'
+        ? new Sperror('Stay not found', getStayError.message, 400)
+        : new Sperror('Server error', getStayError.message, 500)
+    );
+    return;
+  }
+  if (stay.userId !== req.user!.id) {
+    next(new Sperror('No delete rights', "You can't delete this data.", 403));
+    return;
+  }
+  const { result: deletedStay, error: deletedStayError } = await query(() =>
+    deleteStay(stay.id)
+  );
+  if (deletedStayError) {
+    next(new Sperror('Server error', 'Error during stay deletion.', 500));
+    return;
+  }
+  res.json({ stay: deletedStay });
+};
 
 export { get, post, put, remove };
