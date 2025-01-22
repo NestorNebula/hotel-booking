@@ -18,6 +18,7 @@ export default defineConfig({
       '@routes': path.resolve(base, 'routes'),
       '@services': path.resolve(base, 'services'),
       '@styles': path.resolve(base, 'styles'),
+      '#types': path.resolve(base, 'types'),
     },
   },
   test: {

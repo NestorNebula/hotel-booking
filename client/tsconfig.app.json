@@ -42,7 +42,9 @@
       "@services": ["services"],
       "@services/*": ["services/*"],
       "@styles": ["styles"],
-      "@styles/*": ["styles/*"]
+      "@styles/*": ["styles/*"],
+      "#types": ["types"],
+      "#types/*": ["types/*"]
     }
   },
   "include": ["src"]
