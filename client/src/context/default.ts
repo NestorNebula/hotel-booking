@@ -1,6 +1,6 @@
 import { User, Room } from '#types/db';
 
-interface Context {
+export interface Context {
   user: LoggedUser | GuestUser;
   rooms: Room[];
 }
