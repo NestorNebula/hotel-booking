@@ -18,16 +18,18 @@ interface GuestUser extends Pick<User, 'lastName'> {
   isGuest: true;
 }
 
+const guestUser: GuestUser = {
+  id: 0,
+  firstName: null,
+  lastName: 'Guest',
+  email: null,
+  isAdmin: false,
+  isGuest: true,
+};
+
 const defaultContext: Context = {
-  user: {
-    id: 0,
-    firstName: null,
-    lastName: 'Guest',
-    email: null,
-    isAdmin: false,
-    isGuest: true,
-  },
+  user: guestUser,
   rooms: [],
 };
 
-export default defaultContext;
+export { guestUser, defaultContext };

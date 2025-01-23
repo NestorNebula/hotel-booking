@@ -1,4 +1,4 @@
 import Context from '@context/context';
-import defaultContext from '@context/default';
+import { defaultContext, guestUser } from '@context/default';
 
-export { Context, defaultContext };
+export { Context, defaultContext, guestUser };
