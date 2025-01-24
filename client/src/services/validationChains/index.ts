@@ -1,7 +1,7 @@
 import validate from '../validate';
 import type { result } from '../validate';
 
-type validationChain = (fieldName?: string) => {
+export type validationChain = (fieldName?: string) => {
   before: (fieldValue: string) => result;
   after: (fieldValue: string) => result;
 };
