@@ -10,7 +10,7 @@ function Form({
   submit: () => Promise<any>;
   isValid: boolean;
   name?: string;
-  children: ReactElement;
+  children: ReactElement | ReactElement[];
 }) {
   return (
     <S.Form
