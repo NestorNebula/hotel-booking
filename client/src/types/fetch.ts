@@ -18,11 +18,18 @@ interface SuccessfulResponse<Data> {
 }
 
 interface ErrorResponse {
-  result: {
-    error?: Sperror;
-    errors?: { msg: string }[];
-  };
+  result: WithSperror | WithErrors;
   error: true;
+}
+
+interface WithSperror {
+  error: Sperror;
+  errors: undefined;
+}
+
+interface WithErrors {
+  error: undefined;
+  errors: { msg: string }[];
 }
 
 interface Sperror extends Error {
