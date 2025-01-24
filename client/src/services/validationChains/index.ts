@@ -11,7 +11,7 @@ const name: validationChain = (fieldName) => {
     before: (fieldValue) =>
       validate(fieldName || 'Name', fieldValue)
         .isLength({ max: 25 })
-        .isFormat(new RegExp('^[\\w ]*$'))
+        .isFormat(new RegExp('^[a-z ]*$', 'i'))
         .result(),
     after: (fieldValue) =>
       validate(fieldName || 'Name', fieldValue)
