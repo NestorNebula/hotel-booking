@@ -41,7 +41,11 @@ const fetchAPI: ({
   } catch (e) {
     return {
       result: {
-        error: e,
+        error: {
+          title: 'Unexpected Error',
+          msg: 'Unexpected error during fetch.',
+          statusCode: 500,
+        },
       },
       error: true,
     };
