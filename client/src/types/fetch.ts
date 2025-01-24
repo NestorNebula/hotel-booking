@@ -1,7 +1,7 @@
 type Method = 'get' | 'post' | 'put' | 'delete';
 
 interface RequestOptions {
-  body: string;
+  body: string | null;
   credentials: 'include';
   headers: {
     [key: string]: string;

@@ -4,12 +4,12 @@ const getURL = () => {
   return import.meta.env.VITE_API_URL;
 };
 
-const getFetchOptions: (body: object, method: Method) => RequestOptions = (
-  body,
-  method
-) => {
+const getFetchOptions: (
+  body: object | null,
+  method: Method
+) => RequestOptions = (body, method) => {
   return {
-    body: JSON.stringify(body),
+    body: body ? JSON.stringify(body) : null,
     credentials: 'include',
     headers: {
       'content-type': 'application/json',
@@ -31,7 +31,7 @@ const fetchAPI: ({
   try {
     const response = await fetch(
       `${getURL()}${path}`,
-      getFetchOptions(body ?? {}, method)
+      getFetchOptions(body ?? null, method)
     );
     const result = await response.json();
     return {
