@@ -31,7 +31,7 @@ function validate(fieldName: string, fieldValue: string) {
     if (!regex.test(value)) {
       errors.push(
         `${name} isn't in the correct format. ${
-          example && `Example: ${example}`
+          example ? `Example: ${example}` : ''
         }`
       );
     }
