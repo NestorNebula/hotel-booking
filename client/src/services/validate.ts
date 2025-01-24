@@ -1,5 +1,7 @@
 type validateInstance = ReturnType<typeof validate>;
 
+export type result = { value: string; errors: string[] };
+
 function validate(fieldName: string, fieldValue: string) {
   const name = fieldName;
   let value = fieldValue;
@@ -41,7 +43,7 @@ function validate(fieldName: string, fieldValue: string) {
     return this;
   }
 
-  function result(): { value: typeof value; errors: typeof errors } {
+  function result(): result {
     return { value, errors };
   }
 
