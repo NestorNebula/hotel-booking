@@ -8,18 +8,36 @@ import type { Context } from '@context/default';
 const appLoader: () => Promise<Response | Context> = async () => {
   const userId = localStorage.getItem('id');
   if (!userId) return redirect('/auth');
+  let rooms: Room[] = [];
   const fetchRooms: APIResponse<{ rooms: Room[] }> = await fetchAPI({
     path: 'rooms',
     method: 'get',
   });
   if (fetchRooms.error) {
+    const fetchRefresh: APIResponse<{ success: true }> = await fetchAPI({
+      path: 'auth/refresh',
+      method: 'get',
+    });
+    if (!fetchRefresh.error) {
+      const lastFetchRooms: APIResponse<{ rooms: Room[] }> = await fetchAPI({
+        path: 'rooms',
+        method: 'get',
+      });
+      if (!lastFetchRooms.error) {
+        rooms = lastFetchRooms.result.rooms;
+      }
+    }
+  } else {
+    rooms = fetchRooms.result.rooms;
+  }
+  if (!rooms.length) {
     localStorage.removeItem('id');
     return redirect('/auth');
   }
   if (Number(userId) === 0) {
     return {
       user: { ...guestUser, isGuest: true },
-      rooms: fetchRooms.result.rooms,
+      rooms: rooms,
     };
   }
   const fetchUser: APIResponse<{ user: User }> = await fetchAPI({
@@ -32,7 +50,7 @@ const appLoader: () => Promise<Response | Context> = async () => {
   }
   return {
     user: { ...fetchUser.result.user, isGuest: false },
-    rooms: fetchRooms.result.rooms,
+    rooms: rooms,
   };
 };
 
