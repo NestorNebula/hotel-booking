@@ -7,7 +7,9 @@ const mockSubmit = vi.fn();
 describe('Form', () => {
   it('renders form with submit button and its given name', () => {
     render(
-      <Form submit={mockSubmit} isValid={true} name="Button with a name" />
+      <Form submit={mockSubmit} isValid={true} name="Button with a name">
+        <></>
+      </Form>
     );
     expect(
       screen.queryByRole('button', { name: 'Button with a name' })
@@ -15,7 +17,11 @@ describe('Form', () => {
   });
 
   it('calls submit onSubmit when data is valid', async () => {
-    render(<Form submit={mockSubmit} isValid={true} name="Test" />);
+    render(
+      <Form submit={mockSubmit} isValid={true} name="Test">
+        <></>
+      </Form>
+    );
     const user = userEvent.setup();
     const submitButton = screen.getByRole('button', { name: 'Test' });
     await user.click(submitButton);
@@ -23,7 +29,11 @@ describe('Form', () => {
   });
 
   it("doesn't call submit onSubmit when data is invalid", async () => {
-    render(<Form submit={mockSubmit} isValid={false} name="Test" />);
+    render(
+      <Form submit={mockSubmit} isValid={false} name="Test">
+        <></>
+      </Form>
+    );
     const user = userEvent.setup();
     const submitButton = screen.getByRole('button', { name: 'Test' });
     await user.click(submitButton);
