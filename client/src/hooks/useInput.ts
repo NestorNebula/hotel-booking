@@ -34,7 +34,6 @@ const useInput: useInput = (
   const updateValue = (e: ChangeEvent<HTMLInputElement>) => {
     const beforeResult = validator.before(e.currentTarget.value);
     if (beforeResult.errors.length) {
-      setValidation({ isValid: false, message: beforeResult.errors[0] });
       return;
     }
     setValue(beforeResult.value);
