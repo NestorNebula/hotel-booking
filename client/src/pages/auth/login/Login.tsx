@@ -45,17 +45,19 @@ function Login() {
     <Form submit={submitLogin} isValid={isValid} name="Log In">
       <div>Log In</div>
       <Input
-        name="email"
+        name="login-email"
         value={email}
         updateValue={updateEmail}
         validation={emailValidation}
+        label="Email"
         type="email"
       />
       <Input
-        name="password"
+        name="login-password"
         value={password}
         updateValue={updatePassword}
         validation={passwordValidation}
+        label="Password"
         type="password"
       />
       {error ? <div>{error}</div> : <></>}
