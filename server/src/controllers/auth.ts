@@ -46,7 +46,7 @@ const signup = async (req: Request, res: Response, next: NextFunction) => {
   const refreshToken = getRefreshToken(user.id, '7d');
   setToken(res, token, 900000);
   setRefreshToken(res, refreshToken, 7);
-  res.json({ success: true });
+  res.json({ success: true, id: user.id });
 };
 
 const login = async (req: Request, res: Response, next: NextFunction) => {
@@ -73,7 +73,7 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
   const refreshToken = getRefreshToken(user.id, '7d');
   setToken(res, token, 900000);
   setRefreshToken(res, refreshToken, 7);
-  res.json({ success: true });
+  res.json({ success: true, id: user.id });
 };
 
 const guest = (req: Request, res: Response, next: NextFunction) => {
