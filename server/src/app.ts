@@ -1,6 +1,7 @@
 import express, { Request, Response, NextFunction } from 'express';
 const app = express();
 import cors from 'cors';
+import cookieParser = require('cookie-parser');
 import 'dotenv/config';
 import * as routes from '@routes';
 import Sperror from 'sperror';
@@ -14,6 +15,7 @@ app.use(
     origin: process.env.CLIENT_URL,
   })
 );
+app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
