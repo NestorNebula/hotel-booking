@@ -5,11 +5,11 @@ export interface Context {
   rooms: Room[];
 }
 
-interface LoggedUser extends User {
+export interface LoggedUser extends User {
   isGuest: false;
 }
 
-interface GuestUser extends Pick<User, 'lastName'> {
+export interface GuestUser extends Pick<User, 'lastName'> {
   id: 0;
   firstName: null;
   lastName: 'Guest';
