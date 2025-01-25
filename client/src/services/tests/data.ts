@@ -1,5 +1,5 @@
 import { faker } from '@faker-js/faker';
-import type { Reservation, Room, Stay, User } from '../src/types/db';
+import type { Reservation, Room, Stay, User } from '#types/db';
 
 function getFakeReservation({
   userId,
