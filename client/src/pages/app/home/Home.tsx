@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { redirect } from 'react-router';
+import { useNavigate } from 'react-router';
 import { Context } from '@context';
 import RoomButton from './roombutton/RoomButton';
 import * as S from './Home.styles';
@@ -7,8 +7,10 @@ import * as S from './Home.styles';
 function Home() {
   const { rooms } = useContext(Context);
 
+  const navigate = useNavigate();
+
   const onRoomClick = (roomId: number) => {
-    redirect(`/rooms/${roomId}`);
+    navigate(`/rooms/${roomId}`);
   };
 
   return (
