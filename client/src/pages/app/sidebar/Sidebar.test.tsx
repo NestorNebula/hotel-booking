@@ -1,9 +1,11 @@
-import { beforeEach, describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import Sidebar from './Sidebar';
 import { getFakeRoom, getFakeUser } from '@services/tests/data';
 import { Room } from '#types/db';
 
+const mockClose = vi.fn();
 const mockRooms: Room[] = [];
 const roomNumber = Math.round(Math.random() * 10);
 for (let i = 0; i < roomNumber; i++) {
@@ -12,7 +14,7 @@ for (let i = 0; i < roomNumber; i++) {
 const mockUser = getFakeUser();
 
 beforeEach(() => {
-  render(<Sidebar rooms={mockRooms} user={mockUser} />);
+  render(<Sidebar close={mockClose} rooms={mockRooms} user={mockUser} />);
 });
 
 describe('Sidebar', () => {
@@ -34,5 +36,12 @@ describe('Sidebar', () => {
         screen.queryByRole('link', { name: /become an admin/i })
       ).toBeInTheDocument();
     }
+  });
+
+  it('calls close when clicking on close button', async () => {
+    const user = userEvent.setup();
+    const closeButton = screen.getByRole('button', { name: /close/i });
+    await user.click(closeButton);
+    expect(mockClose).toHaveBeenCalled();
   });
 });
