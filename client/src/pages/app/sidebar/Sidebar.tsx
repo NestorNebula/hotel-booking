@@ -1,10 +1,24 @@
 import { Room, User } from '#types/db';
+import { close as closeIcon } from '@assets/icons';
 import * as S from './Sidebar.styles';
 
-function Sidebar({ rooms, user }: { rooms: Room[]; user: User }) {
+function Sidebar({
+  close,
+  rooms,
+  user,
+}: {
+  close: () => void;
+  rooms: Room[];
+  user: User;
+}) {
   return (
     <S.Sidebar>
       <ul>
+        <li>
+          <S.CloseButton aria-label="close sidebar" onClick={close}>
+            <img src={closeIcon} alt="" />
+          </S.CloseButton>
+        </li>
         <li>
           <S.Link href="/">Home</S.Link>
         </li>
