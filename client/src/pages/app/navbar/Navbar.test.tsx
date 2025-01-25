@@ -6,7 +6,9 @@ import Navbar from './Navbar';
 const mockDisplaySidebar = vi.fn();
 
 beforeEach(() => {
-  render(<Navbar updateSidebarDisplay={mockDisplaySidebar} />);
+  render(
+    <Navbar sidebarOpened={false} updateSidebarDisplay={mockDisplaySidebar} />
+  );
 });
 
 describe('Navbar', () => {
