@@ -1,4 +1,5 @@
-import { Room, User } from '#types/db';
+import type { Room } from '#types/db';
+import type { GuestUser, LoggedUser } from '@context/default';
 import { close as closeIcon } from '@assets/icons';
 import * as S from './Sidebar.styles';
 
@@ -9,7 +10,7 @@ function Sidebar({
 }: {
   close: () => void;
   rooms: Room[];
-  user: User;
+  user: LoggedUser | GuestUser;
 }) {
   return (
     <S.Sidebar>
@@ -33,11 +34,13 @@ function Sidebar({
         <li>
           <S.Link href="/account">Your Account</S.Link>
         </li>
-        <li>
-          <S.Link href="/admin">
-            {user.isAdmin ? 'Admin Dashboard' : 'Become an Admin'}
-          </S.Link>
-        </li>
+        {user.isGuest === false && (
+          <li>
+            <S.Link href="/admin">
+              {user.isAdmin ? 'Admin Dashboard' : 'Become an Admin'}
+            </S.Link>
+          </li>
+        )}
       </ul>
     </S.Sidebar>
   );

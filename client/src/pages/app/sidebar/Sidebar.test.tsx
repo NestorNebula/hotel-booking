@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import Sidebar from './Sidebar';
 import { getFakeRoom, getFakeUser } from '@services/tests/data';
-import { Room } from '#types/db';
+import { Room, User } from '#types/db';
 
 const mockClose = vi.fn();
 const mockRooms: Room[] = [];
@@ -11,7 +11,10 @@ const roomNumber = Math.round(Math.random() * 10);
 for (let i = 0; i < roomNumber; i++) {
   mockRooms.push(getFakeRoom({ multiple: i % 2 === 0 }));
 }
-const mockUser = getFakeUser();
+const mockUser: User & { isGuest: false } = {
+  ...getFakeUser(),
+  isGuest: false,
+};
 
 beforeEach(() => {
   render(<Sidebar close={mockClose} rooms={mockRooms} user={mockUser} />);
