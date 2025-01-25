@@ -15,6 +15,15 @@ const options: StrategyOptionsWithoutRequest = {
 
 passport.use(
   new Strategy(options, async (data: { id: number }, done) => {
+    if (data.id === 0) {
+      return done(null, {
+        id: 0,
+        firstName: null,
+        lastName: 'Guest',
+        email: null,
+        isAdmin: false,
+      });
+    }
     const { result: user, error } = await query(() => getUserById(data.id));
     if (error) {
       return error.type === 'Unexpected'
