@@ -18,6 +18,7 @@ beforeAll(() => {
       ...actual,
       useContext: () => {
         return {
+          rooms: mockRooms,
           user: getFakeUser(),
         };
       },
