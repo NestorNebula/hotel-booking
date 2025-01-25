@@ -43,6 +43,8 @@
       "@services/*": ["services/*"],
       "@styles": ["styles"],
       "@styles/*": ["styles/*"],
+      "#tests": ["../tests"],
+      "#tests/*": ["../tests/*"],
       "#types": ["types"],
       "#types/*": ["types/*"]
     }
