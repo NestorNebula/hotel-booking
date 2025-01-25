@@ -1,15 +1,30 @@
-import { beforeEach, describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { MemoryRouter } from 'react-router';
 import App from './App';
+import { getFakeRoom, getFakeUser } from '@services/tests/data';
+
+const mockUser = getFakeUser();
+const mockRooms = [
+  getFakeRoom({ multiple: false }),
+  getFakeRoom({ multiple: true }),
+];
+
+vi.mock('react-router', async () => {
+  const actual = await vi.importActual('react-router');
+  return {
+    ...actual,
+    useLoaderData: () => {
+      return {
+        rooms: mockRooms,
+        user: mockUser,
+      };
+    },
+  };
+});
 
 beforeEach(() => {
-  render(
-    <MemoryRouter>
-      <App />
-    </MemoryRouter>
-  );
+  render(<App />);
 });
 
 describe('App', () => {
