@@ -92,7 +92,10 @@ function Calendar({
       <S.Header>
         <S.PreviousButton
           aria-label="previous month"
-          disabled={date.getUTCMonth() === calendarDate.getUTCMonth()}
+          disabled={
+            date.getUTCMonth() === calendarDate.getUTCMonth() &&
+            date.getUTCFullYear() === calendarDate.getUTCFullYear()
+          }
           onClick={() => updateMonth('backward')}
         ></S.PreviousButton>
         <div>{`${month} ${year}`}</div>
