@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { Navigate, redirect, useParams } from 'react-router';
+import { Navigate, useNavigate, useParams } from 'react-router';
 import { Context } from '@context';
 import Button from '@components/button/Button';
 import * as S from './Room.styles';
@@ -9,8 +9,9 @@ function Room() {
   const { rooms } = useContext(Context);
   const room = rooms.find((r) => r.id === Number(roomId));
 
+  const navigate = useNavigate();
   const onReserveClick = () => {
-    redirect(`/reserve/${room!.id}`);
+    navigate(`/reserve/${room!.id}`);
   };
 
   return (
