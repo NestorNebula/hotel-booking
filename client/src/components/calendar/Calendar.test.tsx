@@ -79,7 +79,7 @@ describe('Calendar', () => {
         startDate={startDate}
       />
     );
-    let day = date.getUTCDate();
+    let day = startDate.getUTCDate();
     while (day > 0) {
       expect(screen.queryByText(day.toString())).toHaveAttribute('disabled');
       day = day - 1;
