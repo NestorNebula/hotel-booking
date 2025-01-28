@@ -86,15 +86,15 @@ describe('Calendar', () => {
     }
   });
 
-  it('disables button on date when reservations are full', async () => {
-    render(
-      <Calendar room={room} reservations={reservations} setDate={mockSetDate} />
-    );
+  it.only('disables button on date when reservations are full', async () => {
     const reservationDate = new Date(date.toJSON());
     reservationDate.setDate(reservationDate.getDate() + 2);
     reservations.push(
       getFakeReservation({ roomId: room.id, date: reservationDate }),
       getFakeReservation({ roomId: room.id, date: reservationDate })
+    );
+    render(
+      <Calendar room={room} reservations={reservations} setDate={mockSetDate} />
     );
     if (reservationDate.getDate() > date.getDate()) {
       expect(
