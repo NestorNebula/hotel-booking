@@ -32,7 +32,9 @@ beforeEach(() => {
 describe('ReservationOverview', () => {
   it('renders reservations overview', () => {
     expect(screen.queryByText(room.name)).toBeInTheDocument();
-    expect(screen.queryByText(`${numberOfNights} nights`)).toBeInTheDocument();
+    expect(
+      screen.getByText(new RegExp(`${numberOfNights} nights`))
+    ).toBeInTheDocument();
     expect(
       screen.queryByText(`$${numberOfNights * room.pricePerDay}`)
     ).toBeInTheDocument();
