@@ -53,12 +53,14 @@ const getMonthWeeks: (date: Date) => MonthWeeks = (date) => {
     const week: DateOrNull[] = [];
     for (let i = 0; i < 7; i++) {
       let weekDay = getISODay(day) - 1;
-      week.push(
-        weekDay === week.length && day.getMonth() === monthNumber
-          ? new Date(day.toJSON())
-          : null
-      );
-      day.setDate(day.getDate() + 1);
+      if (weekDay === week.length) {
+        week.push(
+          day.getMonth() === monthNumber ? new Date(day.toJSON()) : null
+        );
+        day.setDate(day.getDate() + 1);
+      } else {
+        week.push(null);
+      }
     }
     isWeek(week) && month.push(week);
   }
