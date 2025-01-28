@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { format } from 'date-fns';
+import { Context } from '@context';
 import { getMonthWeeks, months } from '@services/date';
 import type { Reservation, Room } from '#types/db';
 import * as S from './Calendar.styles';
@@ -15,6 +16,8 @@ function Calendar({
   setDate: (date: Date) => void;
   startDate?: Date;
 }) {
+  const { user } = useContext(Context);
+
   const date = startDate ?? new Date();
   date.setUTCHours(0, 0, 0, 0);
   const [calendarDate, setCalendarDate] = useState(new Date(date.toJSON()));
@@ -45,13 +48,24 @@ function Calendar({
             ? 0
             : reservations.filter((r) => r.date.getTime() === day.getTime())
                 .length;
+          const existingReservation =
+            day &&
+            !!reservations.filter(
+              (r) => r.date.getTime() === day.getTime() && r.userId === user.id
+            ).length;
           const isAvailable = !startDate
-            ? day && day >= date && dayReservations < maxReservationsPerDay
+            ? day &&
+              day >= date &&
+              dayReservations < maxReservationsPerDay &&
+              !existingReservation
             : day &&
               day > date &&
               day > startDate &&
               !unavailableDayEncountered;
-          if (startDate && dayReservations >= maxReservationsPerDay) {
+          if (
+            startDate &&
+            (dayReservations >= maxReservationsPerDay || existingReservation)
+          ) {
             unavailableDayEncountered = true;
           }
           return day ? (
