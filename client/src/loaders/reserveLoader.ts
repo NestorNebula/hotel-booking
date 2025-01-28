@@ -1,9 +1,9 @@
 import fetchAPI from '@services/api';
-import { type ClientLoaderFunctionArgs, redirect } from 'react-router';
+import { type LoaderFunctionArgs, redirect } from 'react-router';
 import type { Room } from '#types/db';
 import type { APIResponse } from '#types/fetch';
 
-const reserveLoader = async ({ params }: ClientLoaderFunctionArgs) => {
+const reserveLoader = async ({ params }: LoaderFunctionArgs) => {
   const { roomId } = params;
   if (!roomId) return redirect('/');
   const { result, error }: APIResponse<Room.WithReservations> = await fetchAPI({
