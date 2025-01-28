@@ -86,7 +86,7 @@ describe('Calendar', () => {
     }
   });
 
-  it.only('disables button on date when reservations are full', async () => {
+  it('disables button on date when reservations are full', async () => {
     const reservationDate = new Date(date.toJSON());
     reservationDate.setDate(reservationDate.getDate() + 2);
     reservations.push(
@@ -120,7 +120,7 @@ describe('Calendar', () => {
     );
     const day = new Date(reservations[0].date.getDate());
     day.setDate(day.getDate() + 1);
-    while (day.getDate() !== reservations[0].date.getDate()) {
+    while (day.getDate() > reservations[0].date.getDate()) {
       expect(screen.queryByText(day.getDate().toString())).toBeDisabled();
       day.setDate(day.getDate() + 1);
     }
