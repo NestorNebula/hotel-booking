@@ -6,14 +6,15 @@ import type { APIResponse } from '#types/fetch';
 const reserveLoader = async ({ params }: LoaderFunctionArgs) => {
   const { roomId } = params;
   if (!roomId) return redirect('/');
-  const { result, error }: APIResponse<Room.WithReservations> = await fetchAPI({
-    path: `rooms/${roomId}?reservations`,
-    method: 'get',
-  });
+  const { result, error }: APIResponse<{ room: Room.WithReservations }> =
+    await fetchAPI({
+      path: `rooms/${roomId}?reservations`,
+      method: 'get',
+    });
   if (error) return redirect('/');
   return {
     roomId: Number(roomId),
-    reservations: result.reservations[0],
+    reservations: result.room.reservations,
   };
 };
 
