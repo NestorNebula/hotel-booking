@@ -46,12 +46,15 @@ function Calendar({
           const stringDate = day && format(day, 'd MMMM y');
           const dayReservations = !day
             ? 0
-            : reservations.filter((r) => r.date.getTime() === day.getTime())
-                .length;
+            : reservations.filter(
+                (r) => new Date(r.date).getTime() === day.getTime()
+              ).length;
           const existingReservation =
             day &&
             !!reservations.filter(
-              (r) => r.date.getTime() === day.getTime() && r.userId === user.id
+              (r) =>
+                new Date(r.date).getTime() === day.getTime() &&
+                r.userId === user.id
             ).length;
           const isAvailable = !startDate
             ? day &&
