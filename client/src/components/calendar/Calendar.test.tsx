@@ -60,7 +60,7 @@ describe('Calendar', () => {
     let day = date.getUTCDate();
     while (day > 1) {
       day = day - 1;
-      expect(screen.getByText(day.toString())).toHaveAttribute('disabled');
+      expect(screen.queryByText(day.toString())).toHaveAttribute('disabled');
     }
   });
 
@@ -81,9 +81,7 @@ describe('Calendar', () => {
     );
     let day = date.getUTCDate();
     while (day > 0) {
-      expect(
-        screen.queryByRole('button', { name: new RegExp(`${day}`) })
-      ).toHaveAttribute('disabled');
+      expect(screen.queryByText(day.toString())).toHaveAttribute('disabled');
       day = day - 1;
     }
   });
@@ -100,17 +98,13 @@ describe('Calendar', () => {
     );
     if (reservationDate.getDate() > date.getDate()) {
       expect(
-        screen.queryByRole('button', {
-          name: new RegExp(`${reservationDate.getDate()}`),
-        })
+        screen.queryByText(reservationDate.getDate().toString())
       ).toHaveAttribute('disabled');
     } else {
       const user = userEvent.setup();
       await user.click(screen.getByRole('button', { name: /next/i }));
       expect(
-        screen.queryByRole('button', {
-          name: new RegExp(`${reservationDate.getDate()}`),
-        })
+        screen.queryByText(reservationDate.getDate().toString())
       ).toHaveAttribute('disabled');
     }
   });
@@ -127,9 +121,7 @@ describe('Calendar', () => {
     const day = new Date(reservations[0].date.getDate());
     day.setDate(day.getDate() + 1);
     while (day.getDate() !== reservations[0].date.getDate()) {
-      expect(
-        screen.queryByRole('button', { name: new RegExp(`${day.getDate()}`) })
-      ).toBeDisabled();
+      expect(screen.queryByText(day.getDate().toString())).toBeDisabled();
       day.setDate(day.getDate() + 1);
     }
   });
@@ -140,14 +132,10 @@ describe('Calendar', () => {
     );
     const user = userEvent.setup();
     await user.click(
-      screen.getByRole('button', {
-        name: new RegExp(`${reservations[0].date.getDate()}`),
-      })
+      screen.getByText(reservations[0].date.getDate().toString())
     );
     expect(mockSetDate).not.toHaveBeenCalled();
-    await user.click(
-      screen.getByRole('button', { name: new RegExp(`${date.getDate()}`) })
-    );
+    await user.click(screen.getByText(date.getDate().toString()));
     expect(mockSetDate).toHaveBeenCalled();
   });
 });
