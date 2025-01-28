@@ -59,10 +59,8 @@ describe('Calendar', () => {
     );
     let day = date.getUTCDate();
     while (day > 1) {
-      expect(
-        screen.queryByRole('button', { name: new RegExp(`${day - 1}`) })
-      ).toHaveAttribute('disabled');
       day = day - 1;
+      expect(screen.getByText(day.toString())).toHaveAttribute('disabled');
     }
   });
 
