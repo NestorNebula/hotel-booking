@@ -13,7 +13,7 @@ function reservationsWithUser(
   reservations: Reservation[]
 ): reservations is (Reservation & { user: User })[] {
   return (
-    (reservations as (Reservation & { user: User })[])[0].user !== undefined
+    (reservations as (Reservation & { user: User })[])[0]?.user !== undefined
   );
 }
 
