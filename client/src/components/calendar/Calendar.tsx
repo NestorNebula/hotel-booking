@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useContext, useState, useRef } from 'react';
 import { format } from 'date-fns';
 import { Context } from '@context';
 import { getMonthWeeks, months } from '@services/date';
@@ -37,9 +37,9 @@ function Calendar({
   const monthWeeks = getMonthWeeks(calendarDate);
 
   const maxReservationsPerDay = room.numberPerDay;
+  const maxDay = useRef<Date | false>(false);
 
   const getCalendar = (calendarMonthWeeks: typeof monthWeeks) => {
-    let unavailableDayEncountered = false;
     return calendarMonthWeeks.map((week, index) => (
       <S.Week key={`week${index}`}>
         {week.map((day) => {
@@ -64,12 +64,17 @@ function Calendar({
             : day &&
               day > date &&
               day > startDate &&
-              !unavailableDayEncountered;
+              (!maxDay.current || day < maxDay.current);
           if (
+            !maxDay.current &&
+            day &&
             startDate &&
+            day > startDate &&
             (dayReservations >= maxReservationsPerDay || existingReservation)
           ) {
-            unavailableDayEncountered = true;
+            const newMaxDay = new Date(day);
+            newMaxDay.setDate(day.getDate() + 1);
+            maxDay.current = newMaxDay;
           }
           return day ? (
             <S.Day
