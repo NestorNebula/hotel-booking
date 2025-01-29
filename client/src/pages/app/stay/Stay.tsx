@@ -28,7 +28,7 @@ function Stay() {
   lastDay.setDate(lastDay.getDate() + 1);
   const [newStay, setNewStay] = useState<Stay>({
     start: new Date(stay.firstDay),
-    end: lastDay,
+    end: new Date(lastDay.toJSON()),
     room: room!,
   });
   const [error, setError] = useState<string | null>(null);
@@ -74,6 +74,7 @@ function Stay() {
     <S.Stay>
       {!newStay.start ? (
         <Calendar
+          key="calendar-start"
           room={newStay.room}
           reservations={reservations.filter((r) => r.stayId !== stay.id)}
           setDate={setStart}
@@ -82,16 +83,23 @@ function Stay() {
         />
       ) : !newStay.end ? (
         <Calendar
+          key="calendar-end"
           room={newStay.room}
           reservations={reservations.filter((r) => r.stayId !== stay.id)}
           setDate={setEnd}
+          startDate={newStay.start}
           minDate={minDate}
         />
       ) : (
         <ReservationOverview
           room={newStay.room}
           dates={{ start: newStay.start, end: newStay.end }}
-          reserve={reserve}
+          reserve={
+            newStay.start.getTime() !== new Date(stay.firstDay).getTime() ||
+            newStay.end.getTime() !== lastDay.getTime()
+              ? reserve
+              : undefined
+          }
           edit={edit}
         />
       )}
