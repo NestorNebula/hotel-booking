@@ -46,7 +46,7 @@ function Calendar({
   const maxDay = useRef<Date | false>(false);
 
   const checkDate = (day: Date, recursive?: boolean): boolean => {
-    if (recursive && day === endDate) {
+    if (recursive && day.getTime() === endDate!.getTime()) {
       return true;
     }
     const dayReservations = reservations.filter(
@@ -90,7 +90,7 @@ function Calendar({
     if (isAvailable && endDate && day < endDate) {
       const nextDay = new Date(day.toJSON());
       nextDay.setDate(nextDay.getDate() + 1);
-      isAvailable = checkDate(nextDay);
+      isAvailable = checkDate(nextDay, true);
     }
     return isAvailable;
   };
