@@ -1,6 +1,7 @@
 import { describe, expect, it, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { MemoryRouter } from 'react-router';
 import Account from './Account';
 
 vi.mock('react-router', async () => {
@@ -16,7 +17,11 @@ vi.mock('react-router', async () => {
 });
 
 beforeEach(() => {
-  render(<Account />);
+  render(
+    <MemoryRouter>
+      <Account />
+    </MemoryRouter>
+  );
 });
 
 describe('Account', () => {
