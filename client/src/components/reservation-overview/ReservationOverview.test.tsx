@@ -24,7 +24,7 @@ describe('ReservationOverview', () => {
     render(<ReservationOverview room={room} dates={dates} />);
     expect(screen.queryByText(room.name)).toBeInTheDocument();
     expect(
-      screen.getByText(new RegExp(`${numberOfNights} nights`))
+      screen.getByText(new RegExp(`${numberOfNights} night`))
     ).toBeInTheDocument();
     expect(
       screen.queryByText(`$${numberOfNights * room.pricePerDay}`)
