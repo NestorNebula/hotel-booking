@@ -1,12 +1,19 @@
 import type { Reservation } from '#types/db';
 
 export type ReservationWithIsUser =
-  | (Reservation & { isUser: boolean })
-  | (Reservation.WithUser & { isUser: boolean });
+  | (Reservation & { isUser?: boolean })
+  | (Reservation.WithUser & { isUser?: boolean });
 export type Reservations = ReservationWithIsUser[];
 
-const canEdit = (reservation: Reservation & { isUser: boolean }) => {
-  return reservation.isUser && reservation.stayId !== null;
+const canEdit = (
+  reservation: Reservation & { isUser?: boolean },
+  userId: number
+) => {
+  return (
+    (reservation.isUser !== undefined
+      ? reservation.isUser
+      : reservation.userId === userId) && reservation.stayId !== null
+  );
 };
 
 const findStayDates = (reservations: Reservations, stayId: number) => {
@@ -30,6 +37,7 @@ const findStayDates = (reservations: Reservations, stayId: number) => {
         : earliest,
     null
   );
+  end?.setUTCDate(end.getDate() + 1);
   return { start, end };
 };
 

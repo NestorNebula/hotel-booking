@@ -15,14 +15,14 @@ import {
 import * as S from './ReservationList.styles';
 
 function ReservationList({ reservations }: { reservations: Reservations }) {
-  const { rooms } = useContext(Context);
+  const { user, rooms } = useContext(Context);
   reservations.sort((a, b) => {
     return new Date(a.date).getTime() - new Date(b.date).getTime();
   });
   const [actualReservations, setActualReservations] = useState(reservations);
   function reservationIsExtended(
     r: ReservationWithIsUser
-  ): r is Reservation.WithUser & { isUser: boolean } {
+  ): r is Reservation.WithUser & { isUser?: boolean } {
     return (r as Reservation.WithUser).user !== undefined;
   }
 
@@ -64,7 +64,7 @@ function ReservationList({ reservations }: { reservations: Reservations }) {
             (r) =>
               r.date.getTime() !== result.reservation.date.getTime() ||
               r.roomId !== result.reservation.roomId ||
-              !r.isUser
+              r.userId === user.id
           )
         );
       }
@@ -95,9 +95,9 @@ function ReservationList({ reservations }: { reservations: Reservations }) {
             <ReservationOverview
               room={room}
               dates={{ start: dates.start, end: dates.end }}
-              edit={!!canEdit(r) ? () => edit(r.stayId!) : undefined}
+              edit={!!canEdit(r, user.id) ? () => edit(r.stayId!) : undefined}
               remove={
-                r.isUser
+                r.isUser || r.userId === user.id
                   ? r.stayId
                     ? () => remove({ type: 'stay', id: r.stayId! })
                     : () =>
