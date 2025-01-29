@@ -4,7 +4,8 @@ import Auth from '@pages/auth/Auth';
 import Home from '@pages/app/home/Home';
 import Room from '@pages/app/room/Room';
 import Reservation from '@pages/app/reservation/Reservation';
-import { appLoader, authLoader, reserveLoader } from '@loaders';
+import Stay from '@pages/app/stay/Stay';
+import { appLoader, authLoader, reserveLoader, stayLoader } from '@loaders';
 
 const routes: RouteObject[] = [
   {
@@ -24,6 +25,11 @@ const routes: RouteObject[] = [
         path: 'reserve/:roomId',
         element: <Reservation />,
         loader: reserveLoader,
+      },
+      {
+        path: 'stay/:stayId',
+        element: <Stay />,
+        loader: stayLoader,
       },
     ],
   },
