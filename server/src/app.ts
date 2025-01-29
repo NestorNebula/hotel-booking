@@ -8,6 +8,7 @@ import Sperror from 'sperror';
 import passport = require('passport');
 import '@utils/passport/strategy';
 import { handleError } from '@utils/passport/fail';
+import blockGuest from '@utils/guest';
 
 app.use(
   cors({
@@ -25,6 +26,7 @@ app.use(
   '/reservations',
   passport.authenticate('jwt', { session: false, failWithError: true }),
   handleError,
+  blockGuest,
   routes.reservation
 );
 app.use(
@@ -37,12 +39,14 @@ app.use(
   '/stays',
   passport.authenticate('jwt', { session: false, failWithError: true }),
   handleError,
+  blockGuest,
   routes.stay
 );
 app.use(
   '/users',
   passport.authenticate('jwt', { session: false, failWithError: true }),
   handleError,
+  blockGuest,
   routes.user
 );
 
