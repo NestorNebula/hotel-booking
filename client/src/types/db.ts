@@ -47,7 +47,7 @@ interface Reservation {
   userId: number;
   roomId: number;
   date: Date;
-  stayId: null;
+  stayId: number | null;
 }
 
 interface Stay {
