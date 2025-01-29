@@ -79,6 +79,9 @@ function ReservationList({ reservations }: { reservations: Reservations }) {
         const dates = r.stayId
           ? findStayDates(actualReservations, r.stayId)
           : findReservationDates(r);
+        if (r.stayId && dates.start?.getTime() !== new Date(r.date).getTime()) {
+          return;
+        }
         if (!dates.start || !dates.end) return <></>;
         return (
           <S.Reservation key={`reservation${r.userId}${r.roomId}${r.date}`}>
