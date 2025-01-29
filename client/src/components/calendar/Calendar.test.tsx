@@ -33,6 +33,7 @@ describe('Calendar', () => {
       <Calendar room={room} reservations={reservations} setDate={mockSetDate} />
     );
     const nextMonthDate = new Date(date.toJSON());
+    nextMonthDate.setDate(1);
     nextMonthDate.setMonth(nextMonthDate.getMonth() + 1);
     const user = userEvent.setup();
     const nextButton = screen.getByRole('button', { name: /next/i });
