@@ -149,9 +149,7 @@ const validateNewStay = [
       lastDayToDate.setUTCHours(0, 0, 0, 0);
       return firstDayToDate < lastDayToDate;
     })
-    .withMessage(
-      'First day and last day must have a difference of one day at least.'
-    ),
+    .withMessage('Stay must have a minimum of two nights.'),
   body('roomId')
     .notEmpty()
     .withMessage(errors.empty('RoomId'))
@@ -189,9 +187,7 @@ const validateStay = [
       lastDayToDate.setUTCHours(0, 0, 0, 0);
       return firstDayToDate < lastDayToDate;
     })
-    .withMessage(
-      'First day and last day must have a difference of one day at least.'
-    ),
+    .withMessage('Stay must have a minimum of two nights.'),
 ];
 
 export {
