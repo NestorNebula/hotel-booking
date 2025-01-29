@@ -12,7 +12,7 @@ describe('PasswordForm', () => {
       </MemoryRouter>
     );
     expect(screen.queryByLabelText(/current password/i)).toBeInTheDocument();
-    expect(screen.queryByLabelText(/new password/i)).toBeInTheDocument();
+    expect(screen.queryByLabelText('New Password')).toBeInTheDocument();
     expect(
       screen.queryByLabelText(/confirm new password/i)
     ).toBeInTheDocument();
