@@ -90,18 +90,35 @@ function Stay() {
           startDate={newStay.start}
           minDate={minDate}
         />
+      ) : newStay.start.getTime() !== new Date(stay.firstDay).getTime() ||
+        newStay.end.getTime() !== lastDay.getTime() ? (
+        <>
+          <S.Details>
+            <div>Previous Stay</div>
+            <ReservationOverview
+              room={newStay.room}
+              dates={{ start: new Date(stay.firstDay), end: lastDay }}
+            />
+          </S.Details>
+          <S.Details>
+            <div>New Stay</div>
+            <ReservationOverview
+              room={newStay.room}
+              dates={{ start: newStay.start, end: newStay.end }}
+              reserve={reserve}
+              edit={edit}
+            />
+          </S.Details>
+        </>
       ) : (
-        <ReservationOverview
-          room={newStay.room}
-          dates={{ start: newStay.start, end: newStay.end }}
-          reserve={
-            newStay.start.getTime() !== new Date(stay.firstDay).getTime() ||
-            newStay.end.getTime() !== lastDay.getTime()
-              ? reserve
-              : undefined
-          }
-          edit={edit}
-        />
+        <S.Details>
+          <div>Actual Stay</div>
+          <ReservationOverview
+            room={newStay.room}
+            dates={{ start: newStay.start, end: newStay.end }}
+            edit={edit}
+          />
+        </S.Details>
       )}
       {error && <div>{error}</div>}
     </S.Stay>
