@@ -11,11 +11,11 @@ namespace Room {
 }
 
 namespace Reservation {
-  export type WithUser = Stay & { user: User };
+  export type WithUser = Reservation & { user: User };
 
-  export type WithRoom = Stay & { room: Room };
+  export type WithRoom = Reservation & { room: Room };
 
-  export type WithStay = Stay & { stayId: number; stay: Stay };
+  export type WithStay = Reservation & { stayId: number; stay: Stay };
 }
 
 namespace Stay {
