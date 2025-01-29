@@ -17,7 +17,7 @@ import * as S from './ReservationList.styles';
 function ReservationList({ reservations }: { reservations: Reservations }) {
   const { rooms } = useContext(Context);
   reservations.sort((a, b) => {
-    return a.date.getTime() - b.date.getTime();
+    return new Date(a.date).getTime() - new Date(b.date).getTime();
   });
   const [actualReservations, setActualReservations] = useState(reservations);
   function reservationIsExtended(
@@ -81,7 +81,7 @@ function ReservationList({ reservations }: { reservations: Reservations }) {
           : findReservationDates(r);
         if (!dates.start || !dates.end) return <></>;
         return (
-          <S.Reservation>
+          <S.Reservation key={`reservation${r.userId}${r.roomId}${r.date}`}>
             {reservationIsExtended(r) && (
               <S.Title>
                 {r.isUser
