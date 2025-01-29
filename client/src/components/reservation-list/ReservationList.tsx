@@ -62,9 +62,10 @@ function ReservationList({ reservations }: { reservations: Reservations }) {
         setActualReservations(
           actualReservations.filter(
             (r) =>
-              r.date.getTime() !== result.reservation.date.getTime() ||
+              new Date(r.date).getTime() !==
+                new Date(result.reservation.date).getTime() ||
               r.roomId !== result.reservation.roomId ||
-              r.userId === user.id
+              r.userId !== result.reservation.userId
           )
         );
       }
