@@ -87,6 +87,24 @@ describe('Calendar', () => {
     }
   });
 
+  it('disables all buttons equals or after endDate', () => {
+    const endDate = new Date();
+    render(
+      <Calendar
+        room={room}
+        reservations={reservations}
+        setDate={mockSetDate}
+        endDate={endDate}
+      />
+    );
+    const month = endDate.getUTCMonth();
+    while (endDate.getUTCMonth() === month) {
+      const day = endDate.getDate();
+      endDate.setDate(day + 1);
+      expect(screen.queryByText(day.toString())).toHaveAttribute('disabled');
+    }
+  });
+
   it('disables button on date when reservations are full', async () => {
     const reservationDate = new Date(date.toJSON());
     reservationDate.setDate(reservationDate.getDate() + 2);
@@ -138,5 +156,49 @@ describe('Calendar', () => {
     expect(mockSetDate).not.toHaveBeenCalled();
     await user.click(screen.getByText(date.getDate().toString()));
     expect(mockSetDate).toHaveBeenCalled();
+  });
+
+  it('disables all dates before minDate', () => {
+    const minDate = new Date();
+    minDate.setUTCDate(minDate.getDate() + 7);
+    render(
+      <Calendar
+        room={room}
+        reservations={reservations}
+        setDate={mockSetDate}
+        minDate={minDate}
+      />
+    );
+    expect(
+      screen.queryByText(
+        `${minDate.toLocaleDateString('en-US', {
+          month: 'long',
+        })} ${minDate.getUTCFullYear()}`
+      )
+    ).toBeInTheDocument();
+    let day = minDate.getUTCDate();
+    while (day > 1) {
+      day--;
+      expect(screen.queryByText(day.toString())).toHaveAttribute('disabled');
+    }
+  });
+
+  it('disables all dates after maxDate', () => {
+    const maxDate = new Date();
+    render(
+      <Calendar
+        room={room}
+        reservations={reservations}
+        setDate={mockSetDate}
+        maxDate={maxDate}
+      />
+    );
+    const month = maxDate.getUTCMonth();
+    while (maxDate.getUTCMonth() === month) {
+      maxDate.setDate(maxDate.getDate() + 1);
+      expect(screen.queryByText(maxDate.getDate().toString())).toHaveAttribute(
+        'disabled'
+      );
+    }
   });
 });
