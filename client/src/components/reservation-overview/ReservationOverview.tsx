@@ -22,8 +22,11 @@ function ReservationOverview({
       <S.Details>
         <div>{room.name}</div>
         <div>
-          {format(dates.start, 'd MMMM y')} - ${format(dates.end, 'd MMMM y')} (
-          {numberOfNights} nights)
+          {format(dates.start, 'd MMMM y')} - {format(dates.end, 'd MMMM y')} (
+          {numberOfNights < 2
+            ? `${numberOfNights} night`
+            : `${numberOfNights} nights`}
+          )
         </div>
         <div>${room.pricePerDay * numberOfNights}</div>
       </S.Details>
