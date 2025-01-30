@@ -60,13 +60,13 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
   );
   if (error) {
     error.type !== 'Sperror'
-      ? next(new Sperror('Error when searching user.', error.message, 500))
+      ? next(new Sperror('Error when searching user', error.message, 500))
       : next(new Sperror('User not found', error.message, 400));
     return;
   }
   const match = bcrypt.compareSync(req.body.password, user.password);
   if (!match) {
-    next(new Sperror('Incorrect password', "The passwords don't match.", 400));
+    next(new Sperror('Incorrect password', 'Incorrect password.', 400));
     return;
   }
   const token = getToken(user.id, '15m');
