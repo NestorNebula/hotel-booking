@@ -17,7 +17,7 @@ function App() {
 
   return (
     <Context.Provider value={{ rooms, user }}>
-      <S.App>
+      <S.App $sidebarOpened={displaySidebar}>
         <Navbar
           sidebarOpened={displaySidebar}
           updateSidebarDisplay={updateDisplaySidebar}
