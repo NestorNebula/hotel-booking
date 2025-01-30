@@ -47,4 +47,15 @@ const password: validationChain = (fieldName) => {
   };
 };
 
-export { name, email, password };
+const adminPassword: validationChain = (fieldName) => {
+  return {
+    before: (fieldValue) =>
+      validate(fieldName || 'Admin Password', fieldValue).result(),
+    after: (fieldValue) =>
+      validate(fieldName || 'Admin Password', fieldValue)
+        .notEmpty()
+        .result(),
+  };
+};
+
+export { name, email, password, adminPassword };
