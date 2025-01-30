@@ -46,6 +46,9 @@ const GlobalStyle = createGlobalStyle`
     font-size: 62.5%;
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
       Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    --fs-l: clamp(2.25rem, 2.5vw + 1rem, 5rem);
+    --fs-m: clamp(1.25rem, 1.5vw + 0.25rem, 2.5rem);
+    --fs-s: clamp(0.85rem, 1vw + 0.05rem, 1.75rem);
   }
 
   a {
@@ -61,6 +64,11 @@ const GlobalStyle = createGlobalStyle`
 
   button:hover {
     cursor: pointer;
+  }
+
+  ul {
+    padding: 0;
+    list-style: none;
   }
 `;
 
