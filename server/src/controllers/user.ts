@@ -68,7 +68,10 @@ const put = async (req: Request, res: Response, next: NextFunction) => {
       next(new Sperror('Password error', 'New password is empty.', 400));
     }
     const { error: updateUserPasswordError } = await query(() =>
-      updateUserPassword({ id: user.id, password: req.body.newPassword })
+      updateUserPassword({
+        id: user.id,
+        password: bcrypt.hashSync(req.body.newPassword, 10),
+      })
     );
     if (updateUserPasswordError) {
       next(new Sperror('Server error', updateUserPasswordError.message, 500));
