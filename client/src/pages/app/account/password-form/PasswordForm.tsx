@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router';
 import { useInput } from '@hooks';
 import fetchAPI from '@services/api';
 import * as validate from '@services/validationChains';
@@ -33,7 +32,6 @@ function PasswordForm({ user }: { user: User }) {
 
   const [error, setError] = useState<string | null>(null);
 
-  const navigate = useNavigate();
   const updatePassword = async () => {
     const { result, error: fetchError }: APIResponse<{ success: true }> =
       await fetchAPI({
@@ -48,7 +46,7 @@ function PasswordForm({ user }: { user: User }) {
           : result.error.msg || result.error.message
       );
     } else {
-      navigate('/account', { replace: true });
+      window.location.reload();
     }
   };
 

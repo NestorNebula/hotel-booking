@@ -32,7 +32,7 @@ function Sidebar({
           ))}
         </S.RoomList>
         <li>
-          <S.Link href="/account">Your Account</S.Link>
+          <S.Link href={`/account/${user.id}`}>Your Account</S.Link>
         </li>
         {user.isGuest === false && (
           <li>

@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router';
 import { useInput } from '@hooks';
 import fetchAPI from '@services/api';
 import * as validate from '@services/validationChains';
@@ -31,7 +30,6 @@ function AccountForm({ user }: { user: User }) {
 
   const [error, setError] = useState<string | null>(null);
 
-  const navigate = useNavigate();
   const updateUser = async () => {
     const { result, error: fetchError }: APIResponse<{ user: User }> =
       await fetchAPI({
@@ -50,7 +48,7 @@ function AccountForm({ user }: { user: User }) {
           : result.error.msg || result.error.message
       );
     } else {
-      navigate('/account', { replace: true });
+      window.location.reload();
     }
   };
 
