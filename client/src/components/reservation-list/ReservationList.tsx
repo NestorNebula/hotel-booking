@@ -19,7 +19,7 @@ function ReservationList({ reservations }: { reservations: Reservations }) {
   reservations.sort((a, b) => {
     return new Date(a.date).getTime() - new Date(b.date).getTime();
   });
-  const [actualReservations, setActualReservations] = useState(
+  const [actualReservations] = useState(
     reservations.filter(
       (r) => new Date(r.date).getTime() + 86400000 >= new Date().getTime()
     )
@@ -45,33 +45,23 @@ function ReservationList({ reservations }: { reservations: Reservations }) {
     }
     if (isStay(params)) {
       const { id } = params;
-      const { result, error }: APIResponse<{ stay: Stay }> = await fetchAPI({
+      const { error }: APIResponse<{ stay: Stay }> = await fetchAPI({
         path: `stays/${id}`,
         method: 'delete',
       });
       if (!error) {
-        setActualReservations(
-          actualReservations.filter((r) => r.stayId !== result.stay.id)
-        );
+        window.location.reload();
       }
     } else {
       const { roomId, date } = params;
-      const { result, error }: APIResponse<{ reservation: Reservation }> =
+      const { error }: APIResponse<{ reservation: Reservation }> =
         await fetchAPI({
           path: 'reservations',
           body: { date, roomId },
           method: 'delete',
         });
       if (!error) {
-        setActualReservations(
-          actualReservations.filter(
-            (r) =>
-              new Date(r.date).getTime() !==
-                new Date(result.reservation.date).getTime() ||
-              r.roomId !== result.reservation.roomId ||
-              r.userId !== result.reservation.userId
-          )
-        );
+        window.location.reload();
       }
     }
   };
