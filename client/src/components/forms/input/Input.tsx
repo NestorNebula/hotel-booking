@@ -28,6 +28,8 @@ function Input({
         required={!optional}
         value={value}
         onChange={updateValue}
+        placeholder=""
+        $valid={validation.isValid}
       />
       <S.Label htmlFor={name}>{label}</S.Label>
       {!validation.isValid && <S.Error>{validation.message}</S.Error>}
