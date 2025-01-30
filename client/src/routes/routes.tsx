@@ -7,6 +7,7 @@ import Reservation from '@pages/app/reservation/Reservation';
 import Stay from '@pages/app/stay/Stay';
 import Account from '@pages/app/account/Account';
 import Admin from '@pages/app/admin/Admin';
+import ErrorElement from '@pages/app/error-element/ErrorElement';
 import {
   accountLoader,
   adminLoader,
@@ -21,6 +22,7 @@ const routes: RouteObject[] = [
     path: '/',
     element: <App />,
     loader: appLoader,
+    errorElement: <ErrorElement />,
     children: [
       {
         index: true,
@@ -56,6 +58,7 @@ const routes: RouteObject[] = [
     path: 'auth',
     element: <Auth />,
     loader: authLoader,
+    errorElement: <ErrorElement />,
   },
 ];
 
