@@ -11,8 +11,8 @@ import {
 } from '@services/tests/data';
 import { Reservation, User } from '#types/db';
 
-const mockUser = getFakeUser();
-const mockAdmin = { ...mockUser, isAdmin: true };
+const mockUser = { ...getFakeUser(), isAdmin: false };
+const mockAdmin = { ...getFakeUser(), isAdmin: true };
 const mockRooms = [
   getFakeRoom({ multiple: true }),
   getFakeRoom({ multiple: false }),
@@ -87,9 +87,9 @@ describe('Admin', () => {
   it('only displays a room reservations after clicking on it', async () => {
     const user = userEvent.setup();
     await user.click(
-      screen.getByRole('button', {
-        name: new RegExp(`${mockRooms[0].name} reservations`),
-      })
+      screen.getAllByRole('button', {
+        name: 'Room Reservations',
+      })[0]
     );
     expect(screen.queryAllByText(/reserved/i)).toHaveLength(
       mockReservations.filter((r) => r.roomId === mockRooms[0].id).length
