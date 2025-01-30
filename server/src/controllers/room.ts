@@ -7,13 +7,22 @@ import {
   getAllRooms,
 } from '@models/queries';
 import Sperror from 'sperror';
-import { Reservation, User } from '@prisma/client';
+import { Reservation, Room, User } from '@prisma/client';
 
 function reservationsWithUser(
   reservations: Reservation[]
 ): reservations is (Reservation & { user: User })[] {
   return (
     (reservations as (Reservation & { user: User })[])[0]?.user !== undefined
+  );
+}
+
+function roomsWithReservations(
+  rooms: Room[]
+): rooms is (Room & { reservations: Reservation[] })[] {
+  return (
+    (rooms as (Room & { reservations: Reservation[] })[])[0].reservations !==
+    undefined
   );
 }
 
@@ -68,7 +77,19 @@ const getAll = async (req: Request, res: Response, next: NextFunction) => {
     next(new Sperror('Server error', error.message, 500));
     return;
   }
-  res.json({ rooms });
+  if (roomsWithReservations(rooms)) {
+    res.json({
+      rooms: rooms.map((r) => ({
+        ...r,
+        reservations: r.reservations.map((re) => ({
+          ...re,
+          isUser: re.userId === req.user!.id,
+        })),
+      })),
+    });
+  } else {
+    res.json({ rooms });
+  }
 };
 
 export { get, getAll };
