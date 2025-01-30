@@ -6,8 +6,10 @@ import Room from '@pages/app/room/Room';
 import Reservation from '@pages/app/reservation/Reservation';
 import Stay from '@pages/app/stay/Stay';
 import Account from '@pages/app/account/Account';
+import Admin from '@pages/app/admin/Admin';
 import {
   accountLoader,
+  adminLoader,
   appLoader,
   authLoader,
   reserveLoader,
@@ -42,6 +44,11 @@ const routes: RouteObject[] = [
         path: 'account/:userId',
         element: <Account />,
         loader: accountLoader,
+      },
+      {
+        path: 'admin',
+        element: <Admin />,
+        loader: adminLoader,
       },
     ],
   },
