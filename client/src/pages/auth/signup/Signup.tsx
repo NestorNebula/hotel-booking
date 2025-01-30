@@ -103,11 +103,11 @@ function Signup() {
         type="password"
       />
       {!passwordMatch && password && confirm ? (
-        <div>{`Passwords don't match.`}</div>
+        <div className="error">{`Passwords don't match.`}</div>
       ) : (
         <></>
       )}
-      {error ? <div>{error}</div> : <></>}
+      {error ? <div className="error">{error}</div> : <></>}
     </Form>
   );
 }

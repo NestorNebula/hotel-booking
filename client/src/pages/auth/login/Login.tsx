@@ -60,7 +60,7 @@ function Login() {
         label="Password"
         type="password"
       />
-      {error ? <div>{error}</div> : <></>}
+      {error ? <div className="error">{error}</div> : <></>}
     </Form>
   );
 }
