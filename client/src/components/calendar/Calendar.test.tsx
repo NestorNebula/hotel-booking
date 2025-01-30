@@ -137,7 +137,7 @@ describe('Calendar', () => {
         startDate={date}
       />
     );
-    const day = new Date(reservations[0].date.getDate());
+    const day = new Date(reservations[0].date.toJSON());
     day.setDate(day.getDate() + 1);
     while (day.getDate() > reservations[0].date.getDate()) {
       expect(screen.queryByText(day.getDate().toString())).toBeDisabled();
