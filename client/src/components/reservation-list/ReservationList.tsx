@@ -19,7 +19,11 @@ function ReservationList({ reservations }: { reservations: Reservations }) {
   reservations.sort((a, b) => {
     return new Date(a.date).getTime() - new Date(b.date).getTime();
   });
-  const [actualReservations, setActualReservations] = useState(reservations);
+  const [actualReservations, setActualReservations] = useState(
+    reservations.filter(
+      (r) => new Date(r.date).getTime() + 86400000 >= new Date().getTime()
+    )
+  );
   function reservationIsExtended(
     r: ReservationWithIsUser
   ): r is Reservation.WithUser & { isUser?: boolean } {
