@@ -28,15 +28,17 @@ const findStayDates = (reservations: Reservations, stayId: number) => {
           : earliest,
       null
     );
-  const end = reservations.reduce<Date | null>(
-    (earliest, actual) =>
-      !earliest
-        ? new Date(actual.date)
-        : new Date(actual.date).getTime() > earliest.getTime()
-        ? new Date(actual.date)
-        : earliest,
-    null
-  );
+  const end = reservations
+    .filter((r) => r.stayId === stayId)
+    .reduce<Date | null>(
+      (earliest, actual) =>
+        !earliest
+          ? new Date(actual.date)
+          : new Date(actual.date).getTime() > earliest.getTime()
+          ? new Date(actual.date)
+          : earliest,
+      null
+    );
   end?.setUTCDate(end.getDate() + 1);
   return { start, end };
 };
