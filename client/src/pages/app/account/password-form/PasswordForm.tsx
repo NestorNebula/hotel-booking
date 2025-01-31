@@ -77,7 +77,7 @@ function PasswordForm({ user }: { user: User }) {
         label="Confirm New Password"
         type="password"
       />
-      {error ? <div>{error}</div> : <></>}
+      {error ? <div className="error">{error}</div> : <></>}
     </Form>
   );
 }
