@@ -3,6 +3,7 @@ import { format } from 'date-fns';
 import { Context } from '@context';
 import { getMonthWeeks, months } from '@services/date';
 import type { Reservation, Room } from '#types/db';
+import { arrowLeft, arrowRight } from '@assets/icons';
 import * as S from './Calendar.styles';
 
 function Calendar({
@@ -109,6 +110,8 @@ function Calendar({
               }.${!isAvailable ? ` This day isn't available.` : ''}`}
               disabled={!isAvailable}
               onClick={() => setDate(day)}
+              $firstDay={startDate && startDate.getTime() === day.getTime()}
+              $lastDay={endDate && endDate.getTime() === day.getTime()}
             >
               {day.getDate()}
             </S.Day>
@@ -123,20 +126,24 @@ function Calendar({
   return (
     <S.Calendar>
       <S.Header>
-        <S.PreviousButton
+        <S.ArrowButton
           aria-label="previous month"
           disabled={
             date.getUTCMonth() === calendarDate.getUTCMonth() &&
             date.getUTCFullYear() === calendarDate.getUTCFullYear()
           }
           onClick={() => updateMonth('backward')}
-        ></S.PreviousButton>
+        >
+          <img src={arrowLeft} alt="previous" />
+        </S.ArrowButton>
         <div>{`${month} ${year}`}</div>
-        <S.NextButton
+        <S.ArrowButton
           aria-label="next month"
           disabled={date.getUTCMonth() === calendarDate.getUTCMonth() + 1}
           onClick={() => updateMonth('forward')}
-        />
+        >
+          <img src={arrowRight} alt="next" />
+        </S.ArrowButton>
       </S.Header>
       {getCalendar(monthWeeks)}
     </S.Calendar>
