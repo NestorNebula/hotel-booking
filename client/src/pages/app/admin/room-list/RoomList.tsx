@@ -15,7 +15,7 @@ function RoomList({
     <S.RoomList>
       {rooms.map((r) => (
         <S.Room key={`room${r.id}`}>
-          <img src={r.images[0]} alt="" />
+          <img src={`/images/${r.images[0]}.jpg`} alt="" />
           <div>{r.name}</div>
           <Button onClick={() => onRoomClick(r.id)}>{buttonTitle}</Button>
         </S.Room>
