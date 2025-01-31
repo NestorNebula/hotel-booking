@@ -71,6 +71,7 @@ function Reservation() {
 
   return reservation.room ? (
     <S.Reservation>
+      <title>Hotel Booking - Reserve {reservation.room.name}</title>
       {!reservation.start ? (
         <Calendar
           room={reservation.room}

@@ -17,6 +17,9 @@ function Account() {
 
   return !user.isGuest ? (
     <S.Account>
+      <title>
+        Hotel Booking - {`${user.firstName} ${user.lastName} account`}
+      </title>
       <div>Your Account</div>
       {formActive && (
         <S.CloseButton

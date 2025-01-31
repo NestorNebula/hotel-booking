@@ -27,6 +27,7 @@ function ErrorElement() {
 
   return (
     <S.Error>
+      <title>Hotel Booking - Error</title>
       {errorIsError ? (
         <>
           <div>{error.status}</div>

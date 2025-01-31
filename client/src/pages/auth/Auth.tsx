@@ -31,6 +31,7 @@ function Auth() {
 
   return (
     <S.Auth>
+      <title>Hotel Booking - Authentication</title>
       <img src={`/images/room${img}-1.jpg`} alt="" />
       <S.Title>Hotel Booking</S.Title>
       <Signup />

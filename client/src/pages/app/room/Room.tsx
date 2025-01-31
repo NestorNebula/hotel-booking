@@ -29,6 +29,7 @@ function Room() {
     <>
       {room ? (
         <S.Room>
+          <title>Hotel Booking - {room.name}</title>
           <S.Carousel $photoNumber={activePhoto}>
             <div>
               {room.images.map((i) => (

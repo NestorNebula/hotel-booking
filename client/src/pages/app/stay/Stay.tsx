@@ -72,6 +72,7 @@ function Stay() {
 
   return newStay.room ? (
     <S.Stay>
+      <title>Hotel Booking - Edit {newStay.room.name} reservation</title>
       {!newStay.start ? (
         <Calendar
           key="calendar-start"

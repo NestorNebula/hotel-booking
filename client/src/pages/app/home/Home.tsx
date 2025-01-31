@@ -15,6 +15,7 @@ function Home() {
 
   return (
     <S.Home>
+      <title>Hotel Booking - Home</title>
       <S.Header>
         <div>Welcome to our Hotel!</div>
         <div>

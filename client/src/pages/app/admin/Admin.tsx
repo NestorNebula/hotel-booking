@@ -20,6 +20,9 @@ function Admin() {
 
   return (
     <S.Admin>
+      <title>
+        Hotel Booking - {!user.isAdmin ? 'Become an Admin' : 'Admin Dashboard'}
+      </title>
       {!user.isAdmin ? (
         <AdminForm />
       ) : (
