@@ -74,7 +74,7 @@ function Calendar({
       if (minDate) {
         isAvailable = day >= minDate;
       }
-      if (isAvailable && maxDate) {
+      if (isAvailable && maxDate && !recursive) {
         isAvailable = day <= maxDate;
       }
     }
