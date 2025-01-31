@@ -4,8 +4,8 @@
   "main": "dist/app.js",
   "scripts": {
     "test": "export NODE_ENV=test && jest --runInBand",
-    "build": "tsc --project tsconfig.json && tsc-alias -p ts.config.json",
-    "start": "node dist/app.js",
+    "build": "tsc --project tsconfig.json && tsc-alias",
+    "start": "node dist/src/app.js",
     "dev": "nodemon"
   },
   "repository": {
