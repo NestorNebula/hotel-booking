@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import type { Room } from '#types/db';
 import type { GuestUser, LoggedUser } from '@context/default';
 import { close as closeIcon } from '@assets/icons';
@@ -12,6 +13,20 @@ function Sidebar({
   rooms: Room[];
   user: LoggedUser | GuestUser;
 }) {
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        close();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, []);
+
   return (
     <S.Sidebar>
       <ul>
