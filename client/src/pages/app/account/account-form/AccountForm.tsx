@@ -76,7 +76,7 @@ function AccountForm({ user }: { user: User }) {
         validation={emailValidation}
         type="email"
       />
-      {error ? <div>{error}</div> : <></>}
+      {error ? <div className="error">{error}</div> : <></>}
     </Form>
   );
 }
