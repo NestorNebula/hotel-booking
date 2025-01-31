@@ -1,4 +1,5 @@
 import { differenceInCalendarDays, format } from 'date-fns';
+import Button from '@components/button/Button';
 import type { Room } from '#types/db';
 import * as S from './ReservationOverview.styles';
 
@@ -31,9 +32,9 @@ function ReservationOverview({
         <div>${room.pricePerDay * numberOfNights}</div>
       </S.Details>
       <S.Buttons>
-        {edit && <button onClick={edit}>Edit</button>}
-        {reserve && <button onClick={reserve}>Reserve</button>}
-        {remove && <button onClick={remove}>Delete</button>}
+        {edit && <Button onClick={edit}>Edit</Button>}
+        {reserve && <Button onClick={reserve}>Reserve</Button>}
+        {remove && <Button onClick={remove}>Delete</Button>}
       </S.Buttons>
     </S.ReservationOverview>
   );
