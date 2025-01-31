@@ -2,7 +2,6 @@ import styled from 'styled-components';
 
 const Navbar = styled.nav`
   padding: 1rem 3rem;
-  background-color: ${(props) => props.theme.brown};
 
   & > ul {
     display: flex;
@@ -13,7 +12,6 @@ const Navbar = styled.nav`
 const SidebarButton = styled.button`
   & > img {
     width: 5rem;
-    filter: invert();
   }
 `;
 const Logo = styled.img`
