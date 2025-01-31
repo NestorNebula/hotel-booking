@@ -15,7 +15,9 @@ const Sidebar = styled.nav`
   min-height: 100vh;
   background-color: ${(props) => props.theme.brown};
   color: ${(props) => props.theme.white};
-  padding: 1.5rem 5rem 1.5rem 1rem;
+  padding: 1.5rem 3rem 1.5rem 1rem;
+  display: flex;
+  flex-direction: column;
 
   animation: ${sidebarAnimation} 0.5s ease-out forwards;
 
@@ -29,6 +31,27 @@ const Sidebar = styled.nav`
   & > ul {
     font-size: var(--fs-m);
     gap: 2.5rem;
+  }
+
+  & > footer {
+    font-size: var(--fs-s);
+    margin-top: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+    max-width: 30ch;
+    text-align: center;
+
+    & > div {
+      display: flex;
+      gap: 0.25rem;
+      align-items: center;
+    }
+
+    & img {
+      width: 2.5rem;
+    }
   }
 `;
 const CloseButton = styled.button`

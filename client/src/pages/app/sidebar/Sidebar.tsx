@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import type { Room } from '#types/db';
 import type { GuestUser, LoggedUser } from '@context/default';
 import { close as closeIcon } from '@assets/icons';
+import { github } from '@assets/icons';
 import * as S from './Sidebar.styles';
 
 function Sidebar({
@@ -57,6 +58,29 @@ function Sidebar({
           </li>
         )}
       </ul>
+      <footer>
+        <div>
+          ©{' '}
+          <a
+            href="https://noahoussier.vercel.app/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Noa Houssier
+          </a>
+          <a
+            href="https://github.com/NestorNebula"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <img src={github} alt="GitHub" />
+          </a>{' '}
+          2025
+        </div>
+        <a href="https://www.flaticon.com/free-icons/room" title="room icons">
+          Room icons created by Freepik - Flaticon
+        </a>
+      </footer>
     </S.Sidebar>
   );
 }
