@@ -5,6 +5,7 @@ import Button from '@components/button/Button';
 import AccountForm from './account-form/AccountForm';
 import PasswordForm from './password-form/PasswordForm';
 import ReservationList from '@components/reservation-list/ReservationList';
+import { close } from '@assets/icons';
 import * as S from './Account.styles';
 
 function Account() {
@@ -18,7 +19,12 @@ function Account() {
     <S.Account>
       <div>Your Account</div>
       {formActive && (
-        <S.CloseButton onClick={() => setFormActive(null)}>Close</S.CloseButton>
+        <S.CloseButton
+          aria-label="close form"
+          onClick={() => setFormActive(null)}
+        >
+          <img src={close} alt="close" />
+        </S.CloseButton>
       )}
       {!formActive ? (
         <S.Infos>
@@ -26,10 +32,12 @@ function Account() {
             {user.firstName} {user.lastName}
           </div>
           <div>{user.email}</div>
-          <Button onClick={() => setFormActive('account')}>Edit</Button>
-          <Button onClick={() => setFormActive('password')}>
-            Change Password
-          </Button>
+          <S.Buttons>
+            <Button onClick={() => setFormActive('account')}>Edit</Button>
+            <Button onClick={() => setFormActive('password')}>
+              Change Password
+            </Button>
+          </S.Buttons>
         </S.Infos>
       ) : formActive === 'account' ? (
         <AccountForm user={user} />
