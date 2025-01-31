@@ -42,7 +42,7 @@ function AdminForm() {
         label="Admin Password"
         type="password"
       />
-      {error ? <div>{error}</div> : <></>}
+      {error ? <div className="error">{error}</div> : <></>}
     </Form>
   );
 }
