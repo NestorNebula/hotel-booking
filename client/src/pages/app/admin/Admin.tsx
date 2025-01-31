@@ -5,6 +5,7 @@ import AdminForm from './admin-form/AdminForm';
 import RoomList from './room-list/RoomList';
 import ReservationList from '@components/reservation-list/ReservationList';
 import type { ReservationWithIsUser } from '@loaders/adminLoader';
+import { close } from '@assets/icons';
 import * as S from './Admin.styles';
 
 function Admin() {
@@ -24,7 +25,12 @@ function Admin() {
       ) : (
         <>
           {activeRoom ? (
-            <button onClick={() => setActiveRoom(null)}>Close</button>
+            <button
+              aria-label="return to all rooms reservations"
+              onClick={() => setActiveRoom(null)}
+            >
+              <img src={close} />
+            </button>
           ) : (
             <RoomList
               rooms={rooms}
