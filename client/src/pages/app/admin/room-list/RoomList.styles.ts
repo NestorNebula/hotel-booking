@@ -12,7 +12,7 @@ const Room = styled.div`
   grid-template-columns: auto auto 1fr;
   gap: 0.5rem;
   align-items: center;
-  background-color: ${(props) => props.theme.pink};
+  background-color: ${(props) => props.theme.darkGrey};
   color: ${(props) => props.theme.white};
   padding: 2rem;
   border-radius: 10px;
