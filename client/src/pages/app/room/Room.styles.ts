@@ -57,6 +57,9 @@ const Details = styled.div`
 
   & > div:first-child {
     font-size: var(--fs-l);
+    font-family: 'Dancing_Script', system-ui, -apple-system, BlinkMacSystemFont,
+      'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans',
+      'Helvetica Neue', sans-serif;
   }
 
   & > div:nth-of-type(2) {

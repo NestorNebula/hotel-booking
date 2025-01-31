@@ -1,6 +1,16 @@
 import { createGlobalStyle } from 'styled-components';
 
 const GlobalStyle = createGlobalStyle`
+  @font-face {
+    font-family: 'Dancing_Script';
+    src: url('/fonts/Dancing_Script/static/DancingScript-Regular.ttf');
+  }
+
+  @font-face {
+    font-family: 'Afacad';
+    src: url('/fonts/Afacad/static/Afacad-Regular.ttf');
+  }
+  
   *,
   *::before,
   *::after {
@@ -44,7 +54,7 @@ const GlobalStyle = createGlobalStyle`
 
   :root {
     font-size: 62.5%;
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    font-family: 'Afacad', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
       Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     --fs-l: clamp(2.25rem, 2.5vw + 1rem, 5rem);
     --fs-m: clamp(1.25rem, 1.5vw + 0.25rem, 2.5rem);

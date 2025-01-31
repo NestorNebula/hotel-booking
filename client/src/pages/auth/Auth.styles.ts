@@ -21,6 +21,9 @@ const Auth = styled.main`
 `;
 const Title = styled.div`
   font-size: var(--fs-l);
+  font-family: 'Dancing_Script', system-ui, -apple-system, BlinkMacSystemFont,
+    'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue',
+    sans-serif;
   grid-column: 1 / 3;
 `;
 const Guest = styled.button`

@@ -12,6 +12,9 @@ const Header = styled.header`
 
   & > div:first-child {
     font-size: var(--fs-l);
+    font-family: 'Dancing_Script', system-ui, -apple-system, BlinkMacSystemFont,
+      'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans',
+      'Helvetica Neue', sans-serif;
   }
 `;
 const RoomList = styled.section`
