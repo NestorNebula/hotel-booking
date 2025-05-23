@@ -56,10 +56,10 @@ An admin page also exists, allowing admin to have to each room reservations.
 
    ```
    # SSH:
-   git remote add upstream git@github.com:hotel-booking/<repo name>.git
+   git remote add upstream git@github.com:NestorNebula/hotel-booking.git
 
    # HTTPS:
-   git remote add upstream https://github.com/hotel-booking/<repo name>.git
+   git remote add upstream https://github.com/NestorNebula/hotel-booking.git
    ```
 
 4. Go to the server directory
